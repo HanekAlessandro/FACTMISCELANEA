@@ -1,0 +1,16 @@
+bin/
+obj/
+.vs/
+
+appsettings.Development.json
+
+*.user
+*.suo
+*.cache
+*.dbmdl
+
+node_modules/
+
+wwwroot/lib/
+
+publish/
