@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FactMiscelanea.Models
 {
+    [Table("Clientes")]
     public class Cliente
     {
         [Key]
@@ -17,11 +19,10 @@ namespace FactMiscelanea.Models
         public string? direccion { get; set; }
 
         [StringLength(8)]
-        [RegularExpression(@"^\d{8}$", ErrorMessage = "El teléfono debe tener 8 dígitos.")]
         public string? telefono { get; set; }
 
         public int puntos_lealtad { get; set; } = 0;
 
-        public ICollection<Factura>? Facturas { get; set; }
+        public virtual ICollection<Factura>? Facturas { get; set; }
     }
 }

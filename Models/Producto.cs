@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FactMiscelanea.Models
 {
+    [Table("Productos")]
     public class Producto
     {
         [Key]
@@ -21,23 +22,13 @@ namespace FactMiscelanea.Models
 
         public int? id_categoria { get; set; }
 
-        public decimal iva_porcentaje { get; set; } = 15;
+        public decimal iva_porcentaje { get; set; } = 15.00m;
 
         public int stock_actual { get; set; } = 0;
 
         public int stock_minimo { get; set; } = 5;
 
         [ForeignKey("id_categoria")]
-        public Categoria? Categoria { get; set; }
-
-        // CORREGIDO: Cambiar de PreciosPromociones (plural) a PrecioPromocion (singular - uno a uno)
-        public PrecioPromocion? PrecioPromocion { get; set; }
-
-        public ICollection<FacturaDetalle>? FacturaDetalles { get; set; }
-
-        public ICollection<Devolucion>? Devoluciones { get; set; }
-
-        // CORREGIDO: Cambiar de KardexMovimientos a Kardex
-        public ICollection<Kardex>? Kardex { get; set; }
+        public virtual Categoria? Categoria { get; set; }
     }
 }

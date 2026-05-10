@@ -1,8 +1,10 @@
-using FactMiscelanea.Data;
-using FactMiscelanea.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using FactMiscelanea.Data;
+using FactMiscelanea.Models;
+using System.Threading.Tasks;
 
 namespace FactMiscelanea.Pages.Productos
 {
@@ -16,37 +18,41 @@ namespace FactMiscelanea.Pages.Productos
         }
 
         [BindProperty]
-        public Producto Producto { get; set; } = new();
+        public Producto Producto { get; set; } = new Producto(); // Inicializado
 
-        public SelectList Categorias { get; set; } = default!;
+        public SelectList? CategoriasList { get; set; } // Permitir nulo
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            Categorias = new SelectList(
-                _context.Categorias.ToList(),
-                "id_categoria",
-                "nombre_categoria"
-            );
+            var categorias = await _context.Categorias.ToListAsync();
+            CategoriasList = new SelectList(categorias, "id_categoria", "nombre_categoria");
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                Categorias = new SelectList(
-                    _context.Categorias.ToList(),
-                    "id_categoria",
-                    "nombre_categoria"
-                );
-
+                var categorias = await _context.Categorias.ToListAsync();
+                CategoriasList = new SelectList(categorias, "id_categoria", "nombre_categoria");
                 return Page();
             }
 
-            _context.Productos.Add(Producto);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("Index");
+            try
+            {
+                _context.Productos.Add(Producto);
+                await _context.SaveChangesAsync();
+                
+                TempData["SuccessMessage"] = "✅ Producto creado exitosamente";
+                return RedirectToPage("./Index");
+            }
+            catch (System.Exception ex)
+            {
+                ModelState.AddModelError("", $"Error al guardar: {ex.Message}");
+                var categorias = await _context.Categorias.ToListAsync();
+                CategoriasList = new SelectList(categorias, "id_categoria", "nombre_categoria");
+                return Page();
+            }
         }
     }
 }

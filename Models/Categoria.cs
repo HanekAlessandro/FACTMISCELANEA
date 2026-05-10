@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FactMiscelanea.Models
 {
+    [Table("Categorias")]
     public class Categoria
     {
         [Key]
@@ -11,6 +13,6 @@ namespace FactMiscelanea.Models
         [StringLength(50)]
         public string nombre_categoria { get; set; } = string.Empty;
 
-        public ICollection<Producto>? Productos { get; set; }
+        public virtual ICollection<Producto>? Productos { get; set; }
     }
 }

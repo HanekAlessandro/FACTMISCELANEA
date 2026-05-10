@@ -1,16 +1,21 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FactMiscelanea.Models
 {
+    [Table("Metodos_Pago")]
     public class MetodoPago
     {
         [Key]
-        public int id_metodo { get; set; }
+        [Column("id_metodo")]
+        public int IdMetodo { get; set; }
 
+        [Column("nombre_metodo")]
         [Required]
         [StringLength(30)]
-        public string nombre_metodo { get; set; } = string.Empty;
+        public string NombreMetodo { get; set; } = string.Empty;
 
-        public ICollection<Factura>? Facturas { get; set; }
+        // Propiedades de navegación
+        public virtual ICollection<Factura>? Facturas { get; set; }
     }
 }

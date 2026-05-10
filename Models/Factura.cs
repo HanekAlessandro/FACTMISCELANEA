@@ -1,8 +1,10 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FactMiscelanea.Models
 {
+    [Table("Facturas")]
     public class Factura
     {
         [Key]
@@ -20,24 +22,21 @@ namespace FactMiscelanea.Models
 
         public int? id_usuario { get; set; }
 
-        public decimal? subtotal_sin_iva { get; set; }
+        public decimal subtotal_sin_iva { get; set; } = 0;
 
-        public decimal? total_iva { get; set; }
+        public decimal total_iva { get; set; } = 0;
 
-        public decimal? total_final { get; set; }
+        public decimal total_final { get; set; } = 0;
 
         [ForeignKey("id_cliente")]
-        public Cliente? Cliente { get; set; }
+        public virtual Cliente? Cliente { get; set; }
 
         [ForeignKey("id_metodo_pago")]
-        public MetodoPago? MetodoPago { get; set; }
+        public virtual MetodoPago? MetodoPago { get; set; }
 
         [ForeignKey("id_usuario")]
-        public Usuario? Usuario { get; set; }
+        public virtual Usuario? Usuario { get; set; }
 
-        // CORREGIDO: Cambiar de Detalles a FacturaDetalles
-        public ICollection<FacturaDetalle>? FacturaDetalles { get; set; }
-
-        public ICollection<Devolucion>? Devoluciones { get; set; }
+        public virtual ICollection<FacturaDetalle>? FacturaDetalles { get; set; }
     }
 }

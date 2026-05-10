@@ -1,7 +1,9 @@
-using FactMiscelanea.Data;
-using FactMiscelanea.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using FactMiscelanea.Data;
+using FactMiscelanea.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FactMiscelanea.Pages.Productos
 {
@@ -14,11 +16,11 @@ namespace FactMiscelanea.Pages.Productos
             _context = context;
         }
 
-        public IList<Producto> Productos { get; set; }
-            = new List<Producto>();
+        public List<Producto> Productos { get; set; } = new();
 
         public async Task OnGetAsync()
         {
+            // Cargar productos REALES desde la base de datos
             Productos = await _context.Productos
                 .Include(p => p.Categoria)
                 .ToListAsync();

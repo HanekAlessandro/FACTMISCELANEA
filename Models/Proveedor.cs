@@ -1,23 +1,29 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FactMiscelanea.Models
 {
+    [Table("Proveedores")]
     public class Proveedor
     {
         [Key]
-        public int id_proveedor { get; set; }
+        [Column("id_proveedor")]
+        public int IdProveedor { get; set; }
 
+        [Column("nombre_empresa")]
         [Required]
         [StringLength(100)]
-        public string nombre_empresa { get; set; } = string.Empty;
+        public string NombreEmpresa { get; set; } = string.Empty;
 
+        [Column("contacto_nombre")]
         [StringLength(100)]
-        public string? contacto_nombre { get; set; }
+        public string? ContactoNombre { get; set; }
 
+        [Column("telefono")]
         [StringLength(8)]
-        [RegularExpression(@"^\d{8}$", ErrorMessage = "El teléfono debe tener 8 dígitos.")]
-        public string? telefono { get; set; }
+        public string? Telefono { get; set; }
 
-        public string? direccion { get; set; }
+        [Column("direccion")]
+        public string? Direccion { get; set; }
     }
 }
