@@ -13,7 +13,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Usar doble @@ para keyframes en Razor */
         @@keyframes fadeIn {
             from {
                 opacity: 0;
@@ -178,7 +177,6 @@
 </head>
 <body>
     <div class="container main-container">
-        <!-- Header -->
         <div class="header-gradient">
             <div class="row align-items-center">
                 <div class="col-md-8">
@@ -195,7 +193,6 @@
             </div>
         </div>
 
-        <!-- Alertas -->
         @if (TempData["SuccessMessage"] != null)
         {
             <div class="alert alert-success alert-dismissible fade show alert-custom" role="alert">
@@ -212,7 +209,6 @@
             </div>
         }
 
-        <!-- Search and Filter -->
         <div class="row mb-4">
             <div class="col-md-6">
                 <div class="search-box">
@@ -231,7 +227,6 @@
             </div>
         </div>
 
-        <!-- Products Table -->
         <div class="table-responsive">
             <table class="table table-modern table-hover" id="productsTable">
                 <thead>
@@ -250,11 +245,11 @@
                         @foreach (var producto in Model.Productos)
                         {
                             <tr>
-                                <td>
-                                    <strong>@producto.codigo_barras</strong>
+                                <td class="align-middle">
+                                    <strong>@producto.codigo_barras?.Trim()</strong>
                                 </td>
-                                <td>@producto.nombre</td>
-                                <td>
+                                <td class="align-middle">@producto.nombre</td>
+                                <td class="align-middle">
                                     @if (producto.Categoria != null)
                                     {
                                         <span class="badge bg-info text-dark">
@@ -268,7 +263,7 @@
                                         </span>
                                     }
                                 </td>
-                                <td>
+                                <td class="align-middle">
                                     @{
                                         var stockClass = producto.stock_actual <= producto.stock_minimo ? "badge-stock-low" : "badge-stock-normal";
                                     }
@@ -282,13 +277,12 @@
                                         </small>
                                     }
                                 </td>
-                                <td>@producto.iva_porcentaje.ToString("0.00")%</td>
-                                <td class="action-buttons">
+                                <td class="align-middle">@producto.iva_porcentaje.ToString("0.00")%</td>
+                                <td class="action-buttons align-middle">
                                     <a href="/Productos/Edit?id=@producto.id_producto" class="btn btn-sm btn-warning">
                                         <i class="fas fa-edit"></i> Editar
                                     </a>
-                                    <a href="/Productos/Delete?id=@producto.id_producto" class="btn btn-sm btn-danger" 
-                                       onclick="return confirm('¿Estás seguro de eliminar @producto.nombre?')">
+                                    <a href="/Productos/Delete?id=@producto.id_producto" class="btn btn-sm btn-danger">
                                         <i class="fas fa-trash"></i> Eliminar
                                     </a>
                                 </td>
@@ -314,7 +308,6 @@
             </table>
         </div>
 
-        <!-- Footer Stats -->
         <div class="stats-card">
             <div class="row">
                 <div class="col-md-6">
@@ -336,7 +329,6 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Auto-cerrar alertas después de 5 segundos
         $(document).ready(function() {
             setTimeout(function() {
                 $(".alert").fadeOut("slow", function() {
@@ -345,7 +337,6 @@
             }, 5000);
         });
         
-        // Búsqueda en tiempo real
         $("#searchInput").on("keyup", function() {
             var value = $(this).val().toLowerCase();
             $("#productsTable tbody tr").filter(function() {
@@ -353,37 +344,22 @@
             });
         });
         
-        // Filtro por stock
         function filterByStock(type) {
-            $("#productsTable tbody tr").each(function() {
-                var stockText = $(this).find("td:eq(3)").text();
-                var stock = parseInt(stockText);
-                
-                if (type === 'all') {
-                    $(this).show();
-                } else if (type === 'low') {
-                    var isLow = stockText.includes("Mínimo:") || stock <= 5;
-                    $(this).toggle(isLow);
-                }
-            });
-            
-            // Actualizar estilo de botones activos
-            $('.filter-buttons .btn').removeClass('active');
             if (type === 'all') {
+                $("#productsTable tbody tr").show();
                 $('.filter-buttons .btn:first').addClass('active btn-primary');
+                $('.filter-buttons .btn:last').removeClass('active btn-warning');
             } else {
+                $("#productsTable tbody tr").each(function() {
+                    var stockText = $(this).find("td:eq(3)").text();
+                    var stock = parseInt(stockText);
+                    var isLow = stock <= 5;
+                    $(this).toggle(isLow);
+                });
                 $('.filter-buttons .btn:last').addClass('active btn-warning');
+                $('.filter-buttons .btn:first').removeClass('active btn-primary');
             }
         }
-        
-        // Confirmación para eliminar
-        document.querySelectorAll('.btn-delete').forEach(button => {
-            button.addEventListener('click', function(e) {
-                if (!confirm('¿Estás seguro de eliminar este producto?')) {
-                    e.preventDefault();
-                }
-            });
-        });
     </script>
 </body>
 </html>

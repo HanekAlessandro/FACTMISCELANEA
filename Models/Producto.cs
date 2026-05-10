@@ -6,12 +6,19 @@ namespace FactMiscelanea.Models
     [Table("Productos")]
     public class Producto
     {
+        private string _codigo_barras = string.Empty;
+
         [Key]
         public int id_producto { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string codigo_barras { get; set; } = string.Empty;
+        [Column("codigo_barras")]
+        public string codigo_barras 
+        { 
+            get => _codigo_barras?.Replace("\n", "").Replace("\r", "").Trim() ?? string.Empty;
+            set => _codigo_barras = value?.Replace("\n", "").Replace("\r", "").Trim() ?? string.Empty;
+        }
 
         [Required]
         [StringLength(100)]
