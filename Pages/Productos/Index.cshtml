@@ -1,0 +1,83 @@
+﻿@page
+@model FactMiscelanea.Pages.Productos.IndexModel
+
+<h1 class="mb-4">Productos</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">
+    Nuevo Producto
+</a>
+
+<div class="table-responsive">
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Stock</th>
+                <th>IVA</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        @foreach (var item in Model.Productos)
+        {
+            <tr>
+
+                <td>@item.codigo_barras</td>
+
+                <td>@item.nombre</td>
+
+                <td>@item.Categoria?.nombre_categoria</td>
+
+                <td>
+                    @if (item.stock_actual <= item.stock_minimo)
+                    {
+                        <span class="badge bg-danger">
+                            @item.stock_actual
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">
+                            @item.stock_actual
+                        </span>
+                    }
+                </td>
+
+                <td>@item.iva_porcentaje %</td>
+
+                <td class="d-flex gap-1">
+
+                    <a asp-page="Edit"
+                       asp-route-id="@item.id_producto"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a asp-page="Details"
+                       asp-route-id="@item.id_producto"
+                       class="btn btn-info btn-sm">
+                        Detalles
+                    </a>
+
+                    <a asp-page="Delete"
+                       asp-route-id="@item.id_producto"
+                       class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+        </tbody>
+
+    </table>
+
+</div>

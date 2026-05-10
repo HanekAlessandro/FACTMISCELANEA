@@ -1,0 +1,24 @@
+@page "{id:int}"
+@model FactMiscelanea.Pages.Productos.DeleteModel
+
+<h1>Eliminar Producto</h1>
+
+<h3>¿Deseas eliminar este producto?</h3>
+
+<div class="mb-3">
+    <strong>@Model.Producto.nombre</strong>
+</div>
+
+<form method="post">
+
+    <input type="hidden" asp-for="Producto.id_producto" />
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a asp-page="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

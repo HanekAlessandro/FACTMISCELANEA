@@ -38,6 +38,10 @@ namespace FactMiscelanea.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // =============================================
+            // CONFIGURACIÓN DE DECIMALES
+            // =============================================
+
             modelBuilder.Entity<Factura>()
                 .Property(f => f.subtotal_sin_iva)
                 .HasPrecision(18, 2);
@@ -77,6 +81,46 @@ namespace FactMiscelanea.Data
             modelBuilder.Entity<Producto>()
                 .Property(p => p.iva_porcentaje)
                 .HasPrecision(5, 2);
+
+            // =============================================
+            // MAPEO EXACTO DE TABLAS SQL
+            // =============================================
+
+            modelBuilder.Entity<Categoria>()
+                .ToTable("Categorias");
+
+            modelBuilder.Entity<Cliente>()
+                .ToTable("Clientes");
+
+            modelBuilder.Entity<Empresa>()
+                .ToTable("Empresa");
+
+            modelBuilder.Entity<MetodoPago>()
+                .ToTable("Metodos_Pago");
+
+            modelBuilder.Entity<Usuario>()
+                .ToTable("Usuarios");
+
+            modelBuilder.Entity<Proveedor>()
+                .ToTable("Proveedores");
+
+            modelBuilder.Entity<Producto>()
+                .ToTable("Productos");
+
+            modelBuilder.Entity<PrecioPromocion>()
+                .ToTable("Precios_Promociones");
+
+            modelBuilder.Entity<Factura>()
+                .ToTable("Facturas");
+
+            modelBuilder.Entity<FacturaDetalle>()
+                .ToTable("Factura_Detalle");
+
+            modelBuilder.Entity<Devolucion>()
+                .ToTable("Devoluciones");
+
+            modelBuilder.Entity<Kardex>()
+                .ToTable("Kardex");
         }
     }
 }

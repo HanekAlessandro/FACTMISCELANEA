@@ -1,0 +1,53 @@
+@page "{id:int}"
+@model FactMiscelanea.Pages.Productos.EditModel
+
+<h1>Editar Producto</h1>
+
+<form method="post">
+
+    <input type="hidden" asp-for="Producto.id_producto" />
+
+    <div class="mb-3">
+        <label>Código</label>
+        <input asp-for="Producto.codigo_barras" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Nombre</label>
+        <input asp-for="Producto.nombre" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Descripción</label>
+        <input asp-for="Producto.descripcion" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Categoría</label>
+
+        <select asp-for="Producto.id_categoria"
+                asp-items="Model.Categorias"
+                class="form-select">
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Stock</label>
+        <input asp-for="Producto.stock_actual" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Stock Mínimo</label>
+        <input asp-for="Producto.stock_minimo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>IVA</label>
+        <input asp-for="Producto.iva_porcentaje" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-warning">
+        Actualizar
+    </button>
+
+</form>

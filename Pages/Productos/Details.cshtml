@@ -1,0 +1,39 @@
+@page "{id:int}"
+@model FactMiscelanea.Pages.Productos.DetailsModel
+
+<h1>Detalle Producto</h1>
+
+<div class="card p-4">
+
+    <h3>@Model.Producto.nombre</h3>
+
+    <p>
+        <strong>Código:</strong>
+        @Model.Producto.codigo_barras
+    </p>
+
+    <p>
+        <strong>Descripción:</strong>
+        @Model.Producto.descripcion
+    </p>
+
+    <p>
+        <strong>Categoría:</strong>
+        @Model.Producto.Categoria?.nombre_categoria
+    </p>
+
+    <p>
+        <strong>Stock:</strong>
+        @Model.Producto.stock_actual
+    </p>
+
+    <p>
+        <strong>IVA:</strong>
+        @Model.Producto.iva_porcentaje %
+    </p>
+
+</div>
+
+<a asp-page="Index" class="btn btn-secondary mt-3">
+    Volver
+</a>
