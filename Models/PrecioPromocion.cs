@@ -23,6 +23,7 @@ namespace FactMiscelanea.Models
         public DateTime? fecha_fin_promo { get; set; }
 
         [ForeignKey("id_producto")]
-        public Producto Producto { get; set; } = null!;
+        // CORREGIDO: Hacer nullable
+        public Producto? Producto { get; set; }
     }
 }

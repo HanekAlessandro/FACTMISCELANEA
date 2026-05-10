@@ -23,7 +23,7 @@ namespace FactMiscelanea.Pages.Productos
         public void OnGet()
         {
             Categorias = new SelectList(
-                _context.Categorias,
+                _context.Categorias.ToList(),
                 "id_categoria",
                 "nombre_categoria"
             );
@@ -34,7 +34,7 @@ namespace FactMiscelanea.Pages.Productos
             if (!ModelState.IsValid)
             {
                 Categorias = new SelectList(
-                    _context.Categorias,
+                    _context.Categorias.ToList(),
                     "id_categoria",
                     "nombre_categoria"
                 );

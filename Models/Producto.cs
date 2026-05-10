@@ -30,12 +30,14 @@ namespace FactMiscelanea.Models
         [ForeignKey("id_categoria")]
         public Categoria? Categoria { get; set; }
 
-        public ICollection<PrecioPromocion>? PreciosPromociones { get; set; }
+        // CORREGIDO: Cambiar de PreciosPromociones (plural) a PrecioPromocion (singular - uno a uno)
+        public PrecioPromocion? PrecioPromocion { get; set; }
 
         public ICollection<FacturaDetalle>? FacturaDetalles { get; set; }
 
         public ICollection<Devolucion>? Devoluciones { get; set; }
 
-        public ICollection<Kardex>? KardexMovimientos { get; set; }
+        // CORREGIDO: Cambiar de KardexMovimientos a Kardex
+        public ICollection<Kardex>? Kardex { get; set; }
     }
 }

@@ -35,7 +35,8 @@ namespace FactMiscelanea.Models
         [ForeignKey("id_usuario")]
         public Usuario? Usuario { get; set; }
 
-        public ICollection<FacturaDetalle>? Detalles { get; set; }
+        // CORREGIDO: Cambiar de Detalles a FacturaDetalles
+        public ICollection<FacturaDetalle>? FacturaDetalles { get; set; }
 
         public ICollection<Devolucion>? Devoluciones { get; set; }
     }

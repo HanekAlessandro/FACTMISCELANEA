@@ -22,9 +22,11 @@ namespace FactMiscelanea.Models
         public decimal? subtotal_linea { get; set; }
 
         [ForeignKey("id_factura")]
-        public Factura Factura { get; set; } = null!;
+        // CORREGIDO: Hacer nullable
+        public Factura? Factura { get; set; }
 
         [ForeignKey("id_producto")]
-        public Producto Producto { get; set; } = null!;
+        // CORREGIDO: Hacer nullable
+        public Producto? Producto { get; set; }
     }
 }
