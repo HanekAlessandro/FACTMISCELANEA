@@ -252,15 +252,3 @@ Este proyecto es de uso académico y educativo.
 
 *Última actualización: Mayo 2026*
 ```
-
-Este README ahora incluye:
-
-1. ✅ Todas las tecnologías actualizadas (jQuery, Chart.js, SweetAlert2, X.PagedList)
-2. ✅ Estructura completa de la base de datos
-3. ✅ Procedimientos almacenados y triggers
-4. ✅ Funcionalidades del módulo de reportes
-5. ✅ Estado de desarrollo (completo, en desarrollo, próximo)
-6. ✅ Características del diseño
-7. ✅ Solución de problemas comunes
-8. ✅ Capturas de pantalla descritas
-9. ✅ Tabla de estado del proyecto
