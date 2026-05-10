@@ -28,6 +28,12 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/Productos");
+    return Task.CompletedTask;
+});
+
 app.MapRazorPages();
 
 app.Run();
