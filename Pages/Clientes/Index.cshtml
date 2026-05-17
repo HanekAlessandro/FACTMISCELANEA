@@ -1,7 +1,7 @@
-﻿@page
-@model FactMiscelanea.Pages.Productos.IndexModel
+@page
+@model FactMiscelanea.Pages.Clientes.IndexModel
 @{
-    ViewData["Title"] = "Productos - Miscelánea Master";
+    ViewData["Title"] = "Clientes - Miscelánea Master";
 }
 
 <!DOCTYPE html>
@@ -34,19 +34,17 @@
             color: white;
         }
 
-        .btn-nuevo {
+        .btn-primary-gradient {
             background: white;
             color: #667eea;
             border: none;
             padding: 10px 25px;
             font-weight: 600;
             border-radius: 10px;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
+            transition: transform 0.3s;
         }
 
-        .btn-nuevo:hover {
+        .btn-primary-gradient:hover {
             transform: translateY(-2px);
             color: #764ba2;
         }
@@ -59,13 +57,13 @@
         .table thead th {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 12px;
+            padding: 12px 15px;
             text-align: left;
             font-weight: 600;
         }
 
         .table tbody td {
-            padding: 12px;
+            padding: 12px 15px;
             border-bottom: 1px solid #e2e8f0;
             vertical-align: middle;
         }
@@ -81,10 +79,11 @@
         }
 
         .search-box input {
-            width: 100%;
-            padding: 10px 15px 10px 40px;
+            padding-left: 40px;
             border-radius: 25px;
             border: 2px solid #e2e8f0;
+            height: 45px;
+            width: 100%;
         }
 
         .search-box input:focus {
@@ -95,48 +94,49 @@
         .search-box i {
             position: absolute;
             left: 15px;
-            top: 12px;
+            top: 14px;
             color: #a0aec0;
         }
 
         .btn-edit {
-            background: #ed8936;
+            background-color: #ed8936;
             color: white;
+            border: none;
             padding: 5px 12px;
             border-radius: 20px;
-            text-decoration: none;
             margin-right: 5px;
+            text-decoration: none;
             display: inline-block;
+            font-size: 12px;
         }
 
         .btn-edit:hover {
-            background: #dd6b20;
+            background-color: #dd6b20;
             color: white;
         }
 
         .btn-delete {
-            background: #e53e3e;
+            background-color: #e53e3e;
             color: white;
+            border: none;
             padding: 5px 12px;
             border-radius: 20px;
             text-decoration: none;
             display: inline-block;
-        }
-
-        .badge-stock-low {
-            background: #f56565;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 20px;
             font-size: 12px;
         }
 
-        .badge-stock-normal {
-            background: #48bb78;
+        .btn-delete:hover {
+            background-color: #c53030;
             color: white;
-            padding: 3px 10px;
+        }
+
+        .badge-cliente {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .stats-card {
@@ -151,10 +151,13 @@
             margin-bottom: 20px;
         }
 
-        .empty-row td {
-            text-align: center;
-            padding: 40px;
-            color: #718096;
+        @@keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-container {
+            animation: fadeIn 0.5s ease-out;
         }
     </style>
 </head>
@@ -165,13 +168,13 @@
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <h1 class="display-5 mb-2">
-                        <i class="fas fa-boxes me-3"></i>Gestión de Productos
+                        <i class="fas fa-users me-3"></i>Gestión de Clientes
                     </h1>
-                    <p class="lead mb-0">Administra tu inventario de manera eficiente</p>
+                    <p class="lead mb-0">Administra tu cartera de clientes de manera eficiente</p>
                 </div>
                 <div class="col-md-4 text-end">
-                    <a href="/Productos/Create" class="btn-nuevo">
-                        <i class="fas fa-plus-circle me-2"></i>Nuevo Producto
+                    <a href="/Clientes/Create" class="btn-primary-gradient">
+                        <i class="fas fa-plus-circle me-2"></i>Nuevo Cliente
                     </a>
                 </div>
             </div>
@@ -194,65 +197,52 @@
             </div>
         }
 
-        <!-- Buscador -->
+        <!-- Search Box -->
         <div class="row mb-4">
             <div class="col-md-6">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Buscar por código, nombre o categoría...">
+                    <input type="text" id="searchInput" placeholder="Buscar por nombre, identificación o teléfono...">
                 </div>
             </div>
             <div class="col-md-6 text-end">
-                <span class="badge bg-secondary">
-                    <i class="fas fa-boxes me-1"></i> Total: @(Model.Productos?.Count ?? 0) productos
+                <span class="badge-cliente">
+                    <i class="fas fa-users me-1"></i> Total: @(Model.Clientes?.Count ?? 0) clientes
                 </span>
             </div>
         </div>
 
-        <!-- Tabla de Productos -->
+        <!-- Tabla de Clientes -->
         <div class="table-responsive">
-            <table class="table table-bordered" id="productosTable">
+            <table class="table" id="clientesTable">
                 <thead>
                     <tr>
-                        <th style="width: 10%">Código</th>
-                        <th style="width: 15%">Nombre</th>
-                        <th style="width: 20%">Descripción</th>
-                        <th style="width: 10%">Categoría</th>
-                        <th style="width: 10%">Precio</th>
-                        <th style="width: 8%">Stock</th>
-                        <th style="width: 8%">Stock Mín.</th>
-                        <th style="width: 7%">IVA</th>
-                        <th style="width: 12%">Acciones</th>
+                        <th>ID</th>
+                        <th>Identificación</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Dirección</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.Productos != null && Model.Productos.Any())
+                    @if (Model.Clientes != null && Model.Clientes.Any())
                     {
-                        @foreach (var producto in Model.Productos)
+                        @foreach (var cliente in Model.Clientes)
                         {
                             <tr>
-                                <td>@producto.codigo_barras</td>
-                                <td>@producto.nombre</td>
-                                <td>@(producto.descripcion?.Length > 40 ? producto.descripcion.Substring(0, 40) + "..." : producto.descripcion ?? "—")</td>
-                                <td>@(producto.Categoria?.nombre_categoria ?? "—")</td>
-                                <td>₡@(producto.PrecioActual.ToString("N2"))</td>
+                                <td class="fw-bold">@cliente.id_cliente</td>
+                                <td>@(string.IsNullOrEmpty(cliente.identificacion) ? "—" : cliente.identificacion)</td>
+                                <td>@cliente.nombre</td>
+                                <td>@(string.IsNullOrEmpty(cliente.telefono) ? "—" : cliente.telefono)</td>
+                                <td>@(string.IsNullOrEmpty(cliente.email) ? "—" : cliente.email)</td>
+                                <td>@(string.IsNullOrEmpty(cliente.direccion) ? "—" : (cliente.direccion.Length > 30 ? cliente.direccion.Substring(0, 30) + "..." : cliente.direccion))</td>
                                 <td>
-                                    @if (producto.stock_actual <= producto.stock_minimo)
-                                    {
-                                        <span class="badge-stock-low">@producto.stock_actual</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge-stock-normal">@producto.stock_actual</span>
-                                    }
-                                </td>
-                                <td>@producto.stock_minimo</td>
-                                <td>@producto.iva_porcentaje.ToString("0.00")%</td>
-                                <td>
-                                    <a href="/Productos/Edit?id=@producto.id_producto" class="btn-edit">
+                                    <a href="/Clientes/Edit?id=@cliente.id_cliente" class="btn-edit">
                                         <i class="fas fa-edit"></i> Editar
                                     </a>
-                                    <a href="/Productos/Delete?id=@producto.id_producto" class="btn-delete">
+                                    <a href="/Clientes/Delete?id=@cliente.id_cliente" class="btn-delete">
                                         <i class="fas fa-trash"></i> Eliminar
                                     </a>
                                 </td>
@@ -261,11 +251,11 @@
                     }
                     else
                     {
-                        <tr class="empty-row">
-                            <td colspan="9">
-                                <i class="fas fa-box-open fa-3x mb-3 d-block text-muted"></i>
-                                <h5>No hay productos registrados</h5>
-                                <a href="/Productos/Create" class="btn btn-primary mt-3">Agregar Producto</a>
+                        <tr>
+                            <td colspan="7" class="text-center py-5">
+                                <i class="fas fa-users-slash fa-3x mb-3 d-block text-muted"></i>
+                                <h5>No hay clientes registrados</h5>
+                                <a href="/Clientes/Create" class="btn btn-primary mt-3">Agregar Cliente</a>
                             </td>
                         </tr>
                     }
@@ -273,12 +263,12 @@
             </table>
         </div>
 
-        <!-- Footer -->
+        <!-- Footer Stats -->
         <div class="stats-card">
             <div class="row">
                 <div class="col-md-6 text-start">
                     <i class="fas fa-chart-line me-2"></i>
-                    Total de productos: <strong>@(Model.Productos?.Count ?? 0)</strong>
+                    Total de clientes: <strong>@(Model.Clientes?.Count ?? 0)</strong>
                 </div>
                 <div class="col-md-6 text-end">
                     <i class="fas fa-clock me-2"></i>
@@ -294,13 +284,13 @@
         // Búsqueda en tiempo real
         $("#searchInput").on("keyup", function() {
             var value = $(this).val().toLowerCase();
-            $("#productosTable tbody tr").each(function() {
+            $("#clientesTable tbody tr").each(function() {
                 var texto = $(this).text().toLowerCase();
                 $(this).toggle(texto.indexOf(value) > -1);
             });
         });
 
-        // Auto-cerrar alertas
+        // Auto-cerrar alertas después de 5 segundos
         $(document).ready(function() {
             setTimeout(function() {
                 $(".alert").fadeOut("slow", function() {

@@ -1,0 +1,108 @@
+@page
+@model FactMiscelanea.Pages.Facturas.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Factura";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+        }
+        .delete-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: auto;
+        }
+        .header-delete {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+            text-align: center;
+        }
+        .warning-icon {
+            font-size: 80px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container delete-container">
+        <div class="header-delete">
+            <i class="fas fa-exclamation-triangle warning-icon"></i>
+            <h1>Eliminar Factura</h1>
+            <p class="mb-0">¿Estás seguro de que deseas eliminar esta factura?</p>
+        </div>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle me-2"></i> @TempData["ErrorMessage"]
+            </div>
+        }
+
+        @if (Model.Factura != null)
+        {
+            <div class="card mb-3">
+                <div class="card-header bg-danger text-white">
+                    <i class="fas fa-info-circle me-2"></i>Información de la Factura
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Folio:</dt>
+                        <dd class="col-sm-8">@Model.Factura.folio</dd>
+
+                        <dt class="col-sm-4">Fecha:</dt>
+                        <dd class="col-sm-8">@Model.Factura.fecha_hora.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4">Cliente:</dt>
+                        <dd class="col-sm-8">@(Model.Factura.Cliente?.nombre ?? "Público General")</dd>
+
+                        <dt class="col-sm-4">Total:</dt>
+                        <dd class="col-sm-8 fw-bold text-danger">₡@Model.Factura.total_final.ToString("N2")</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <i class="fas fa-ban me-2"></i>
+                <strong>¡Advertencia!</strong> Esta acción no se puede deshacer. La factura será eliminada permanentemente.
+            </div>
+
+            <form method="post">
+                <input type="hidden" asp-for="Factura.id_factura" />
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-danger btn-lg">
+                        <i class="fas fa-trash me-2"></i>Sí, Eliminar Factura
+                    </button>
+                    <a href="/Facturas" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-times me-2"></i>Cancelar
+                    </a>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-warning text-center">
+                <i class="fas fa-search me-2"></i>Factura no encontrada
+            </div>
+            <div class="text-center">
+                <a href="/Facturas" class="btn btn-primary">Volver a Facturas</a>
+            </div>
+        }
+    </div>
+</body>
+</html>

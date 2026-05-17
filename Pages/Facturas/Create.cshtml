@@ -1,0 +1,272 @@
+@page
+@model FactMiscelanea.Pages.Facturas.CreateModel
+@{
+    ViewData["Title"] = "Nueva Factura";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .factura-container { background: rgba(255,255,255,0.95); border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); padding: 30px; }
+        .header-factura { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 20px; margin-bottom: 30px; color: white; }
+        .btn-agregar { background: #48bb78; color: white; border: none; padding: 8px 20px; border-radius: 20px; transition: all 0.3s; }
+        .btn-agregar:hover { background: #38a169; transform: translateY(-2px); }
+        .btn-guardar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 10px 30px; border-radius: 25px; font-weight: 600; }
+        .btn-eliminar-item { background: #e53e3e; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 12px; }
+        .total-card { background: #f8f9fa; border-radius: 15px; padding: 20px; margin-top: 20px; }
+        .table-productos th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .stock-info { font-size: 12px; color: #718096; margin-top: 5px; }
+        .stock-error { font-size: 12px; color: #e53e3e; margin-top: 5px; }
+        @@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .factura-container { animation: fadeIn 0.5s ease-out; }
+    </style>
+</head>
+<body>
+    <div class="container factura-container">
+        <div class="header-factura">
+            <h2><i class="fas fa-file-invoice me-3"></i>Nueva Factura</h2>
+            <p class="mb-0">Complete los datos de la factura</p>
+        </div>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show">@TempData["ErrorMessage"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+        }
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show">@TempData["SuccessMessage"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+        }
+
+        <form method="post">
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <label class="fw-bold">Folio:</label>
+                    <div class="form-control-plaintext">@Model.Factura.folio</div>
+                    <input type="hidden" asp-for="Factura.folio" />
+                </div>
+                <div class="col-md-3">
+                    <label class="fw-bold">Fecha:</label>
+                    <div class="form-control-plaintext">@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</div>
+                </div>
+                <div class="col-md-3">
+                    <label class="fw-bold">Cliente:</label>
+                    <select asp-for="Factura.id_cliente" class="form-select">
+                        <option value="">Seleccione un cliente</option>
+                        @foreach (var cliente in Model.ClientesList) { <option value="@cliente.Value">@cliente.Text</option> }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="fw-bold">Método de Pago:</label>
+                    <select asp-for="Factura.id_metodo_pago" class="form-select">
+                        <option value="">Seleccione un método</option>
+                        @foreach (var metodo in Model.MetodosPagoList) { <option value="@metodo.Value">@metodo.Text</option> }
+                    </select>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white"><i class="fas fa-cart-plus me-2"></i>Agregar Producto</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label>Producto</label>
+                            <select id="productoSelect" class="form-select">
+                                <option value="">Seleccione un producto</option>
+                                @foreach (var producto in Model.ProductosList) { <option value="@producto.Value">@producto.Text</option> }
+                            </select>
+                            <div id="stockInfo" class="stock-info"></div>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Cantidad</label>
+                            <input type="number" id="cantidadInput" class="form-control" value="1" min="1">
+                            <div id="stockError" class="stock-error"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Precio Unitario</label>
+                            <input type="text" id="precioInput" class="form-control" readonly>
+                        </div>
+                        <div class="col-md-2 text-end pt-4">
+                            <button type="button" class="btn-agregar" onclick="agregarProducto()"><i class="fas fa-plus me-1"></i> Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-productos">
+                    <thead><tr><th>Producto</th><th>Cantidad</th><th>Precio Unitario</th><th>IVA (15%)</th><th>Subtotal</th><th>Acciones</th></tr></thead>
+                    <tbody id="productosBody"></tbody>
+                </table>
+            </div>
+
+            <div class="total-card">
+                <div class="row">
+                    <div class="col-md-6 offset-md-6">
+                        <table class="table table-borderless">
+                            <tr><th>Subtotal:</th><td class="text-end">₡<span id="subtotalTotal">0.00</span><input type="hidden" asp-for="Factura.subtotal_sin_iva" id="subtotalSinIva" value="0" /></td></tr>
+                            <tr><th>IVA (15%):</th><td class="text-end">₡<span id="ivaTotal">0.00</span><input type="hidden" asp-for="Factura.total_iva" id="totalIva" value="0" /></td></tr>
+                            <tr class="table-active"><th>Total:</th><td class="text-end fw-bold">₡<span id="totalFinal">0.00</span><input type="hidden" asp-for="Factura.total_final" id="totalFactura" value="0" /></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="submit" class="btn-guardar"><i class="fas fa-save me-2"></i>Guardar Factura</button>
+                <a href="/Facturas" class="btn btn-secondary ms-2"><i class="fas fa-times me-2"></i>Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <div id="errorModal" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white"><h5 class="modal-title"><i class="fas fa-exclamation-circle me-2"></i>Error</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body" id="errorMessage"></div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Datos de productos precargados (manejo seguro)
+        var productosData = @Html.Raw(Model.ProductosDataJson ?? "[]");
+        
+        // Depuración: ver qué datos se están cargando
+        console.log("ProductosDataJson:", productosData);
+        
+        let productos = [];
+        let precioProductoActual = 0;
+        let stockProductoActual = 0;
+
+        $("#productoSelect").change(function() {
+            var productoId = parseInt($(this).val());
+            var producto = productosData.find(p => p.id == productoId);
+            
+            if (producto && producto.id) {
+                // Asegurar que el precio se maneje correctamente
+                precioProductoActual = typeof producto.precio === 'number' ? producto.precio : parseFloat(producto.precio) / 100;
+                stockProductoActual = producto.stock;
+                $("#precioInput").val("₡" + precioProductoActual.toFixed(2));
+                $("#stockInfo").html(`<i class="fas fa-box me-1"></i> Stock disponible: ${stockProductoActual} unidades`);
+                $("#cantidadInput").attr("max", stockProductoActual);
+                $("#stockError").hide();
+            } else {
+                $("#precioInput").val("");
+                $("#stockInfo").html("");
+                precioProductoActual = 0;
+                stockProductoActual = 0;
+            }
+        });
+
+        $("#cantidadInput").on("input", function() {
+            var cantidad = parseInt($(this).val());
+            if (cantidad > stockProductoActual && stockProductoActual > 0) {
+                $("#stockError").text(`Máximo disponible: ${stockProductoActual} unidades`).show();
+            } else {
+                $("#stockError").hide();
+            }
+        });
+
+        function agregarProducto() {
+            var productoId = $("#productoSelect").val();
+            var productoNombre = $("#productoSelect option:selected").text();
+            var cantidad = parseInt($("#cantidadInput").val()) || 0;
+            var precioUnitario = precioProductoActual;
+
+            if (!productoId) { mostrarError("Seleccione un producto"); return; }
+            if (cantidad < 1) { mostrarError("Ingrese una cantidad válida"); return; }
+            if (precioUnitario <= 0) { mostrarError("El producto no tiene precio configurado"); return; }
+            if (cantidad > stockProductoActual) { mostrarError(`Stock insuficiente. Disponible: ${stockProductoActual} unidades`); return; }
+
+            var existente = productos.find(p => p.id == productoId);
+            if (existente) {
+                var nuevaCantidad = existente.cantidad + cantidad;
+                if (nuevaCantidad > stockProductoActual) {
+                    mostrarError(`Stock insuficiente. Ya tiene ${existente.cantidad}. Máximo: ${stockProductoActual}`);
+                    return;
+                }
+                existente.cantidad = nuevaCantidad;
+                existente.subtotal = parseFloat((existente.cantidad * existente.precioUnitario).toFixed(2));
+                existente.iva = parseFloat((existente.subtotal * 0.15).toFixed(2));
+            } else {
+                productos.push({
+                    id: productoId,
+                    nombre: productoNombre.split(' -')[0],
+                    cantidad: cantidad,
+                    precioUnitario: precioUnitario,
+                    subtotal: parseFloat((cantidad * precioUnitario).toFixed(2)),
+                    iva: parseFloat(((cantidad * precioUnitario) * 0.15).toFixed(2))
+                });
+            }
+            actualizarTabla();
+            calcularTotales();
+            $("#productoSelect").val("");
+            $("#precioInput").val("");
+            $("#cantidadInput").val(1);
+            $("#stockInfo").html("");
+            precioProductoActual = 0;
+            stockProductoActual = 0;
+        }
+
+        function eliminarProducto(index) {
+            productos.splice(index, 1);
+            actualizarTabla();
+            calcularTotales();
+        }
+
+        function actualizarTabla() {
+            var tbody = $("#productosBody");
+            tbody.empty();
+            if (productos.length === 0) {
+                tbody.append(`<tr><td colspan="6" class="text-center text-muted py-4"><i class="fas fa-box-open fa-2x mb-2 d-block"></i>No hay productos agregados<\/td></tr>`);
+                return;
+            }
+            for (var i = 0; i < productos.length; i++) {
+                var p = productos[i];
+                tbody.append(`
+                    <tr>
+                        <td>${p.nombre}</td>
+                        <td class="text-center">${p.cantidad}</td>
+                        <td class="text-end">₡${p.precioUnitario.toFixed(2)}<\/td
+                        <td class="text-end">₡${p.iva.toFixed(2)}<\/td
+                        <td class="text-end">₡${p.subtotal.toFixed(2)}<\/td
+                        <td class="text-center"><button type="button" class="btn-eliminar-item" onclick="eliminarProducto(${i})"><i class="fas fa-trash"><\/i><\/button><\/td
+                    </td>
+                `);
+            }
+        }
+
+        function calcularTotales() {
+            var subtotal = 0, iva = 0;
+            for (var i = 0; i < productos.length; i++) {
+                subtotal += productos[i].subtotal;
+                iva += productos[i].iva;
+            }
+            $("#subtotalTotal").text(subtotal.toFixed(2));
+            $("#ivaTotal").text(iva.toFixed(2));
+            $("#totalFinal").text((subtotal + iva).toFixed(2));
+            $("#subtotalSinIva").val(subtotal.toFixed(2));
+            $("#totalIva").val(iva.toFixed(2));
+            $("#totalFactura").val((subtotal + iva).toFixed(2));
+        }
+
+        function mostrarError(mensaje) {
+            $("#errorMessage").text(mensaje);
+            $("#errorModal").modal("show");
+        }
+
+        $(document).ready(function() {
+            setTimeout(function() { $(".alert").fadeOut("slow", function() { $(this).remove(); }); }, 5000);
+        });
+    </script>
+</body>
+</html>

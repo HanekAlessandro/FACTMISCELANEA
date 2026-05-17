@@ -18,6 +18,54 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FactMiscelanea.styles.css" asp-append-version="true" />
     
+    <style>
+        body {
+            padding-top: 70px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .brand-text {
+            background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-link {
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .nav-link:hover {
+            transform: translateY(-2px);
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 0;
+            margin-top: 50px;
+            border-top: 1px solid #e9ecef;
+        }
+        .main-content {
+            min-height: calc(100vh - 140px);
+        }
+        .user-name {
+            font-weight: 600;
+        }
+        .btn-logout {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.8);
+            transition: all 0.3s;
+        }
+        .btn-logout:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+    
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -33,39 +81,54 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Productos">
-                                <i class="fas fa-boxes me-1"></i> Productos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Clientes">
-                                <i class="fas fa-users me-1"></i> Clientes
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Facturas">
-                                <i class="fas fa-file-invoice me-1"></i> Facturas
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Reportes">
-                                <i class="fas fa-chart-line me-1"></i> Reportes
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user-circle me-1"></i> Usuario
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Mi Perfil</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configuración</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <!-- Menú visible SOLO cuando el usuario ha iniciado sesión -->
+                    @if (Context.Session.GetInt32("UsuarioId") != null)
+                    {
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Productos">
+                                    <i class="fas fa-boxes me-1"></i> Productos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Clientes">
+                                    <i class="fas fa-users me-1"></i> Clientes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Facturas">
+                                    <i class="fas fa-file-invoice me-1"></i> Facturas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Reportes">
+                                    <i class="fas fa-chart-line me-1"></i> Reportes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Account/Logout">
+                                    <i class="fas fa-sign-out-alt me-1"></i>
+                                    <span class="user-name">@Context.Session.GetString("UsuarioNombre")</span>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <!-- Menú para usuarios NO logueados -->
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Account/Login">
+                                    <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Account/Register">
+                                    <i class="fas fa-user-plus me-1"></i> Registrarse
+                                </a>
+                            </li>
+                        </ul>
+                    }
                 </div>
             </div>
         </nav>
@@ -98,6 +161,17 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    
+    <script>
+        // Auto-cerrar alertas después de 5 segundos
+        $(document).ready(function() {
+            setTimeout(function() {
+                $(".alert").fadeOut("slow", function() {
+                    $(this).remove();
+                });
+            }, 5000);
+        });
+    </script>
     
     @await RenderSectionAsync("Scripts", required: false)
 </body>

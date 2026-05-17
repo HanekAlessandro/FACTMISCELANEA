@@ -1,0 +1,180 @@
+@page
+@model FactMiscelanea.Pages.Facturas.DetailsModel
+@{
+    ViewData["Title"] = "Detalles de Factura";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .details-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .header-factura {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+        @@media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            .details-container {
+                box-shadow: none;
+                padding: 15px;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .header-factura {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container details-container">
+        <div class="header-factura">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-file-invoice me-3"></i>Detalles de Factura</h1>
+                    <p class="mb-0">Información completa de la transacción</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <p class="mb-0"><i class="fas fa-calendar-alt me-2"></i>@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información de la factura -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-info-circle me-2"></i>Información General
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Folio:</dt>
+                            <dd class="col-sm-8">@Model.Factura.folio</dd>
+
+                            <dt class="col-sm-4">Fecha:</dt>
+                            <dd class="col-sm-8">@Model.Factura.fecha_hora.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                            <dt class="col-sm-4">Cliente:</dt>
+                            <dd class="col-sm-8">@(Model.Factura.Cliente?.nombre ?? "Público General")</dd>
+
+                            <dt class="col-sm-4">Método de Pago:</dt>
+                            <dd class="col-sm-8">@(Model.Factura.MetodoPago?.nombre_metodo ?? "No especificado")</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-chart-line me-2"></i>Resumen Financiero
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Subtotal:</dt>
+                            <dd class="col-sm-8">₡@Model.Factura.subtotal_sin_iva.ToString("N2")</dd>
+
+                            <dt class="col-sm-4">IVA:</dt>
+                            <dd class="col-sm-8">₡@Model.Factura.total_iva.ToString("N2")</dd>
+
+                            <dt class="col-sm-4">Total:</dt>
+                            <dd class="col-sm-8 fw-bold text-success">₡@Model.Factura.total_final.ToString("N2")</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Productos -->
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <i class="fas fa-boxes me-2"></i>Productos
+            </div>
+            <div class="card-body">
+                @if (Model.DetallesFactura != null && Model.DetallesFactura.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>IVA</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int contador = 1;
+                                    foreach (var detalle in Model.DetallesFactura)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@contador</td>
+                                            <td>@detalle.Producto?.nombre</td>
+                                            <td class="text-center">@detalle.cantidad</td>
+                                            <td class="text-end">₡@detalle.precio_unitario_aplicado.ToString("N2")</td>
+                                            <td class="text-end">₡@detalle.iva_aplicado.ToString("N2")</td>
+                                            <td class="text-end fw-bold">₡@detalle.subtotal_linea.ToString("N2")</td>
+                                        </tr>
+                                        contador++;
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="table-active">
+                                    <td colspan="5" class="text-end fw-bold">TOTAL FACTURA:</td>
+                                    <td class="text-end fw-bold text-success">₡@Model.Factura.total_final.ToString("N2")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info text-center">
+                        <i class="fas fa-info-circle me-2"></i>No hay productos registrados en esta factura.
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="text-center mt-4 no-print">
+            <button onclick="window.print()" class="btn btn-primary">
+                <i class="fas fa-print me-2"></i>Imprimir Factura
+            </button>
+            <a href="/Facturas" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Volver
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

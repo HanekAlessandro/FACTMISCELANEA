@@ -7,22 +7,32 @@ namespace FactMiscelanea.Models
     public class Cliente
     {
         [Key]
+        [Column("id_cliente")]
         public int id_cliente { get; set; }
 
-        [StringLength(20)]
-        public string? identificacion { get; set; }
+        [Column("identificacion")]
+        public string identificacion { get; set; } = string.Empty;
 
-        [StringLength(100)]
-        public string nombre { get; set; } = "Público General";
+        [Column("nombre")]
+        public string nombre { get; set; } = string.Empty;
 
-        [StringLength(255)]
-        public string? direccion { get; set; }
+        [Column("direccion")]
+        public string direccion { get; set; } = string.Empty;
 
-        [StringLength(8)]
-        public string? telefono { get; set; }
+        [Column("telefono")]
+        public string telefono { get; set; } = string.Empty;
 
-        public int puntos_lealtad { get; set; } = 0;
+        // Agregar esta propiedad
+        [Column("email")]
+        public string email { get; set; } = string.Empty;
 
-        public virtual ICollection<Factura>? Facturas { get; set; }
+        [Column("puntos_lealtad")]
+        public int puntos_lealtad { get; set; }
+
+        [Column("activo")]
+        public bool activo { get; set; } = true;
+
+        [Column("fecha_registro")]
+        public DateTime fecha_registro { get; set; } = DateTime.Now;
     }
 }

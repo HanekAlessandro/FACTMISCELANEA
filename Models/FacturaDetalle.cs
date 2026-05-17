@@ -7,22 +7,26 @@ namespace FactMiscelanea.Models
     public class FacturaDetalle
     {
         [Key]
+        [Column("id_detalle")]
         public int id_detalle { get; set; }
 
-        [Required]
+        [Column("id_factura")]
         public int id_factura { get; set; }
 
-        [Required]
+        [Column("id_producto")]
         public int id_producto { get; set; }
 
-        [Required]
+        [Column("cantidad")]
         public int cantidad { get; set; }
 
-        public decimal precio_unitario_aplicado { get; set; } = 0;
+        [Column("precio_unitario_aplicado")]
+        public decimal precio_unitario_aplicado { get; set; }
 
-        public decimal iva_aplicado { get; set; } = 0;
+        [Column("iva_aplicado")]
+        public decimal iva_aplicado { get; set; }
 
-        public decimal subtotal_linea { get; set; } = 0;
+        [Column("subtotal_linea")]
+        public decimal subtotal_linea { get; set; }
 
         [ForeignKey("id_factura")]
         public virtual Factura? Factura { get; set; }

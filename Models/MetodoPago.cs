@@ -8,14 +8,12 @@ namespace FactMiscelanea.Models
     {
         [Key]
         [Column("id_metodo")]
-        public int IdMetodo { get; set; }
+        public int id_metodo { get; set; }
 
         [Column("nombre_metodo")]
-        [Required]
-        [StringLength(30)]
-        public string NombreMetodo { get; set; } = string.Empty;
+        public string nombre_metodo { get; set; } = string.Empty;
 
-        // Propiedades de navegación
-        public virtual ICollection<Factura>? Facturas { get; set; }
+        [Column("activo")]
+        public bool activo { get; set; } = true;
     }
 }

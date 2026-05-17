@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,34 +8,33 @@ namespace FactMiscelanea.Models
     {
         [Key]
         [Column("id_precio")]
-        public int IdPrecio { get; set; }
+        public int id_precio { get; set; }
 
         [Column("id_producto")]
-        [Required]
-        public int IdProducto { get; set; }
+        public int id_producto { get; set; }
 
         [Column("costo_compra")]
-        [Required]
-        public decimal CostoCompra { get; set; }
+        public decimal costo_compra { get; set; }
 
         [Column("precio_sugerido")]
-        public decimal PrecioSugerido { get; set; } = 0;
+        public decimal? precio_sugerido { get; set; }
 
         [Column("precio_final")]
-        [Required]
-        public decimal PrecioFinal { get; set; }
+        public decimal precio_final { get; set; }
 
         [Column("es_promocional")]
-        public bool EsPromocional { get; set; } = false;
+        public bool es_promocional { get; set; }
 
         [Column("fecha_inicio_promo")]
-        public DateTime? FechaInicioPromo { get; set; }
+        public DateOnly? fecha_inicio_promo { get; set; }
 
         [Column("fecha_fin_promo")]
-        public DateTime? FechaFinPromo { get; set; }
+        public DateOnly? fecha_fin_promo { get; set; }
 
-        // Propiedades de navegación
-        [ForeignKey("IdProducto")]
+        [Column("fecha_actualizacion")]
+        public DateTime fecha_actualizacion { get; set; } = DateTime.Now;
+
+        [ForeignKey("id_producto")]
         public virtual Producto? Producto { get; set; }
     }
 }

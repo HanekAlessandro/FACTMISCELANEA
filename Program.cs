@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using FactMiscelanea.Data;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +15,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"),
         sqlOptions => sqlOptions.EnableRetryOnFailure()
     )
-    .EnableSensitiveDataLogging() // Solo para desarrollo
-    .EnableDetailedErrors());      // Solo para desarrollo
+    .EnableSensitiveDataLogging()
+    .EnableDetailedErrors());
+
+// Agregar servicios de sesión
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -32,7 +44,29 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.UseSession();
 app.MapRazorPages();
+
+// Middleware de autorización simple (alternativa)
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path;
+    var publicPaths = new[] { "/Account/Login", "/Account/Register", "/Account/Logout" };
+    
+    var isPublic = publicPaths.Any(p => path.StartsWithSegments(p));
+    
+    if (!isPublic)
+    {
+        var userId = context.Session.GetInt32("UsuarioId");
+        if (userId == null)
+        {
+            context.Response.Redirect("/Account/Login");
+            return;
+        }
+    }
+    
+    await next();
+});
 
 // Probar conexión a BD
 using (var scope = app.Services.CreateScope())

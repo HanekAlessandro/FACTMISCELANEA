@@ -1,0 +1,58 @@
+@page
+@model FactMiscelanea.Pages.Clientes.CreateModel
+@{
+    ViewData["Title"] = "Crear Cliente";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3><i class="fas fa-user-plus me-2"></i>Crear Cliente</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label>Identificación</label>
+                            <input asp-for="cliente.identificacion" class="form-control" />
+                            <span asp-validation-for="cliente.identificacion" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Nombre</label>
+                            <input asp-for="cliente.nombre" class="form-control" required />
+                            <span asp-validation-for="cliente.nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Teléfono</label>
+                            <input asp-for="cliente.telefono" class="form-control" />
+                            <span asp-validation-for="cliente.telefono" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Email</label>
+                            <input asp-for="cliente.email" type="email" class="form-control" />
+                            <span asp-validation-for="cliente.email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Dirección</label>
+                            <textarea asp-for="cliente.direccion" class="form-control"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-save me-2"></i>Guardar Cliente
+                        </button>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <a href="/Clientes" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Volver
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

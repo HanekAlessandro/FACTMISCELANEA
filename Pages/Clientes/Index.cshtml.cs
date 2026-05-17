@@ -3,10 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using FactMiscelanea.Data;
 using FactMiscelanea.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace FactMiscelanea.Pages.Productos
+namespace FactMiscelanea.Pages.Clientes
 {
     public class IndexModel : PageModel
     {
@@ -17,16 +16,12 @@ namespace FactMiscelanea.Pages.Productos
             _context = context;
         }
 
-        public List<Producto> Productos { get; set; } = new List<Producto>();
+        public List<Cliente> Clientes { get; set; } = new();
 
         public async Task OnGetAsync()
         {
-            // Obtener productos con su categoría y precios (include)
-            Productos = await _context.Productos
-                .Include(p => p.Categoria)
-                .Include(p => p.PreciosPromociones)  // Esto carga los precios automáticamente
-                .Where(p => p.activo)
-                .OrderBy(p => p.id_producto)
+            Clientes = await _context.Clientes
+                .OrderBy(c => c.nombre) 
                 .ToListAsync();
         }
     }

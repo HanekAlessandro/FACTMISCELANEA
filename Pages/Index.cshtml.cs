@@ -5,6 +5,7 @@ using FactMiscelanea.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace FactMiscelanea.Pages
 {
@@ -23,6 +24,9 @@ namespace FactMiscelanea.Pages
         public int TotalFacturas { get; set; }
         public int TotalCategorias { get; set; }
         
+        // Propiedad para el ingreso total
+        public decimal TotalIngresos { get; set; }
+        
         // Productos con stock bajo
         public List<Producto> ProductsStockBajo { get; set; } = new List<Producto>();
         
@@ -31,13 +35,22 @@ namespace FactMiscelanea.Pages
 
         public async Task OnGetAsync()
         {
+            // Verificar si hay sesión activa (protección)
+            if (HttpContext.Session.GetInt32("UsuarioId") == null)
+            {
+                return;
+            }
+
             // Obtener estadísticas
             TotalProducts = await _context.Productos.CountAsync();
             TotalClientes = await _context.Clientes.CountAsync();
             TotalFacturas = await _context.Facturas.CountAsync();
             TotalCategorias = await _context.Categorias.CountAsync();
+            
+            // Obtener ingreso total (suma de todas las facturas)
+            TotalIngresos = await _context.Facturas.SumAsync(f => f.total_final);
 
-            // Obtener productos con stock bajo (usando minúsculas)
+            // Obtener productos con stock bajo
             ProductsStockBajo = await _context.Productos
                 .Where(p => p.stock_actual <= p.stock_minimo)
                 .OrderBy(p => p.stock_actual)
@@ -45,7 +58,7 @@ namespace FactMiscelanea.Pages
                 .Include(p => p.Categoria)
                 .ToListAsync();
 
-            // Obtener últimas 5 facturas (usando minúsculas)
+            // Obtener últimas 5 facturas
             UltimasFacturas = await _context.Facturas
                 .OrderByDescending(f => f.fecha_hora)
                 .Take(5)

@@ -34,39 +34,80 @@
             color: white;
         }
         
+        .user-info {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 8px 15px;
+            display: inline-block;
+        }
+        
         .stat-card {
             background: white;
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
         
         .stat-icon {
-            font-size: 40px;
+            font-size: 45px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
         }
         
         .stat-number {
             font-size: 32px;
             font-weight: bold;
             margin: 10px 0;
+            color: #2d3748;
+        }
+        
+        .stat-label {
+            color: #718096;
+            font-size: 14px;
+            font-weight: 500;
         }
         
         .stock-warning {
             background-color: #fff3cd;
             border-left: 4px solid #ffc107;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .stock-warning:hover {
+            transform: translateX(5px);
+        }
+        
+        .stock-warning-danger {
+            background-color: #f8d7da;
+            border-left-color: #dc3545;
+        }
+        
+        .card-header {
+            font-weight: 600;
+            border-bottom: none;
+        }
+        
+        .btn-quick {
+            padding: 12px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        
+        .btn-quick:hover {
+            transform: translateY(-2px);
         }
         
         @@keyframes fadeIn {
@@ -77,112 +118,195 @@
         .dashboard-container {
             animation: fadeIn 0.5s ease-out;
         }
+        
+        .greeting {
+            font-size: 1.2rem;
+            margin-top: 15px;
+        }
+        
+        .badge-role {
+            background: rgba(255,255,255,0.25);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+        }
+        
+        .footer-stats {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #718096;
+        }
     </style>
 </head>
 <body>
     <div class="container dashboard-container">
+        <!-- Header con información del usuario -->
         <div class="welcome-header">
-            <h1 class="display-4">
-                <i class="fas fa-store me-3"></i>Miscelánea Master
-            </h1>
-            <p class="lead">Sistema de facturación y control de inventario</p>
-            <hr class="bg-light">
-            <p class="mb-0">
-                <i class="fas fa-calendar-alt me-2"></i>@DateTime.Now.ToString("dddd, dd MMMM yyyy")
-            </p>
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h1 class="display-4">
+                        <i class="fas fa-store me-3"></i>Miscelánea Master
+                    </h1>
+                    <p class="lead mb-0">Sistema de facturación y control de inventario</p>
+                </div>
+                <div class="col-md-5 text-end">
+                    <div class="user-info">
+                        <i class="fas fa-user-circle me-2 fs-4"></i>
+                        <strong>@HttpContext.Session.GetString("UsuarioNombre")</strong><br>
+                        <span class="badge-role">
+                            <i class="fas fa-shield-alt me-1"></i>@HttpContext.Session.GetString("UsuarioRol")
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light my-3">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">
+                        <i class="fas fa-calendar-alt me-2"></i>@DateTime.Now.ToString("dddd, dd MMMM yyyy")
+                    </p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0 greeting">
+                        <i class="fas fa-smile-wink me-2"></i>¡Bienvenido de vuelta!
+                    </p>
+                </div>
+            </div>
         </div>
 
+        <!-- Tarjetas de estadísticas -->
         <div class="row mb-4">
             <div class="col-md-3">
-                <div class="stat-card text-center">
+                <div class="stat-card text-center" onclick="window.location.href='/Productos'">
                     <i class="fas fa-boxes stat-icon"></i>
-                    <div class="stat-number">@Model.TotalProducts</div>
-                    <div class="text-muted">Productos</div>
+                    <div class="stat-number">@Model.TotalProducts.ToString("N0")</div>
+                    <div class="stat-label">Productos Registrados</div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="stat-card text-center">
+                <div class="stat-card text-center" onclick="window.location.href='/Clientes'">
                     <i class="fas fa-users stat-icon"></i>
-                    <div class="stat-number">@Model.TotalClientes</div>
-                    <div class="text-muted">Clientes</div>
+                    <div class="stat-number">@Model.TotalClientes.ToString("N0")</div>
+                    <div class="stat-label">Clientes Activos</div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="stat-card text-center">
+                <div class="stat-card text-center" onclick="window.location.href='/Facturas'">
                     <i class="fas fa-file-invoice-dollar stat-icon"></i>
-                    <div class="stat-number">@Model.TotalFacturas</div>
-                    <div class="text-muted">Facturas</div>
+                    <div class="stat-number">@Model.TotalFacturas.ToString("N0")</div>
+                    <div class="stat-label">Facturas Emitidas</div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="stat-card text-center">
+                <div class="stat-card text-center" onclick="window.location.href='/Reportes'">
                     <i class="fas fa-tags stat-icon"></i>
-                    <div class="stat-number">@Model.TotalCategorias</div>
-                    <div class="text-muted">Categorías</div>
+                    <div class="stat-number">@Model.TotalCategorias.ToString("N0")</div>
+                    <div class="stat-label">Categorías</div>
                 </div>
             </div>
         </div>
 
+        <!-- Sección de alertas y actividad reciente -->
         <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header bg-warning">
+            <!-- Productos con Stock Bajo -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-warning text-dark">
                         <h5 class="mb-0">
                             <i class="fas fa-exclamation-triangle me-2"></i>
                             Productos con Stock Bajo
+                            <span class="badge bg-dark ms-2">@(Model.ProductsStockBajo?.Count ?? 0)</span>
                         </h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="max-height: 350px; overflow-y: auto;">
                         @if (Model.ProductsStockBajo != null && Model.ProductsStockBajo.Any())
                         {
                             foreach (var producto in Model.ProductsStockBajo)
                             {
-                                <div class="stock-warning">
-                                    <strong>@producto.nombre</strong><br>
-                                    <small class="text-muted">
-                                        Código: @producto.codigo_barras<br>
-                                        Stock actual: @producto.stock_actual |
-                                        Stock mínimo: @producto.stock_minimo
-                                    </small>
+                                var diferencia = producto.stock_minimo - producto.stock_actual;
+                                var isUrgent = diferencia <= 2;
+                                <div class="stock-warning @(isUrgent ? "stock-warning-danger" : "")">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <strong>@producto.nombre</strong><br>
+                                            <small class="text-muted">
+                                                <i class="fas fa-barcode me-1"></i>@producto.codigo_barras
+                                            </small>
+                                        </div>
+                                        @if (isUrgent)
+                                        {
+                                            <span class="badge bg-danger">¡URGENTE!</span>
+                                        }
+                                    </div>
+                                    <div class="mt-2">
+                                        <div class="progress" style="height: 8px;">
+                                            @{
+                                                var porcentaje = (producto.stock_actual * 100) / producto.stock_minimo;
+                                                porcentaje = porcentaje > 100 ? 100 : porcentaje;
+                                            }
+                                            <div class="progress-bar bg-danger" style="width: @porcentaje%"></div>
+                                        </div>
+                                        <small class="text-muted">
+                                            Stock actual: <strong class="text-danger">@producto.stock_actual</strong> |
+                                            Stock mínimo: @producto.stock_minimo |
+                                            Faltan: @diferencia unidades
+                                        </small>
+                                    </div>
                                 </div>
                             }
                         }
                         else
                         {
-                            <p class="text-success">
-                                <i class="fas fa-check-circle me-2"></i>
-                                Todos los productos tienen stock adecuado
-                            </p>
+                            <div class="text-center py-4">
+                                <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                                <p class="text-success mb-0">
+                                    ¡Excelente! Todos los productos tienen stock adecuado.
+                                </p>
+                            </div>
                         }
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="/Reportes/StockBajo" class="btn btn-sm btn-warning w-100">
+                            <i class="fas fa-eye me-2"></i>Ver todos los productos con stock bajo
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="card">
+            <!-- Últimas Facturas -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
                     <div class="card-header bg-info text-white">
                         <h5 class="mb-0">
                             <i class="fas fa-clock me-2"></i>
                             Últimas Facturas
+                            <span class="badge bg-light text-dark ms-2">@(Model.UltimasFacturas?.Count ?? 0)</span>
                         </h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="max-height: 350px; overflow-y: auto;">
                         @if (Model.UltimasFacturas != null && Model.UltimasFacturas.Any())
                         {
-                            <div class="list-group">
+                            <div class="list-group list-group-flush">
                                 @foreach (var factura in Model.UltimasFacturas)
                                 {
-                                    <div class="list-group-item">
+                                    <div class="list-group-item border-start-0 border-end-0">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div>
-                                                <strong>Folio: @factura.folio</strong><br>
+                                                <strong class="text-primary">
+                                                    <i class="fas fa-receipt me-1"></i>@factura.folio
+                                                </strong><br>
                                                 <small class="text-muted">
-                                                    @factura.fecha_hora.ToString("dd/MM/yyyy HH:mm")
+                                                    <i class="fas fa-calendar-day me-1"></i>@factura.fecha_hora.ToString("dd/MM/yyyy HH:mm")
                                                 </small>
                                             </div>
-                                            <span class="badge bg-success">
-                                                ₡@factura.total_final.ToString("N2")
-                                            </span>
+                                            <div class="text-end">
+                                                <span class="badge bg-success fs-6">
+                                                    ₡@factura.total_final.ToString("N2")
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 }
@@ -190,43 +314,75 @@
                         }
                         else
                         {
-                            <p class="text-muted">No hay facturas registradas</p>
+                            <div class="text-center py-4">
+                                <i class="fas fa-file-invoice fa-3x text-muted mb-3"></i>
+                                <p class="text-muted mb-0">No hay facturas registradas</p>
+                                <a href="/Facturas" class="btn btn-sm btn-primary mt-3">
+                                    <i class="fas fa-plus me-2"></i>Crear primera factura
+                                </a>
+                            </div>
                         }
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="/Facturas" class="btn btn-sm btn-info w-100 text-white">
+                            <i class="fas fa-list me-2"></i>Ver todas las facturas
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-4">
+        <!-- Accesos Rápidos -->
+        <div class="row mt-2">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">
                             <i class="fas fa-bolt me-2"></i>Accesos Rápidos
                         </h5>
-                        <div class="row">
-                            <div class="col-md-3 mb-2">
-                                <a href="/Productos" class="btn btn-primary w-100">
-                                    <i class="fas fa-box me-2"></i>Gestionar Productos
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3 col-sm-6">
+                                <a href="/Productos" class="btn btn-primary btn-quick w-100">
+                                    <i class="fas fa-box me-2"></i>Productos
                                 </a>
                             </div>
-                            <div class="col-md-3 mb-2">
-                                <a href="/Clientes" class="btn btn-success w-100">
-                                    <i class="fas fa-user me-2"></i>Gestionar Clientes
+                            <div class="col-md-3 col-sm-6">
+                                <a href="/Clientes" class="btn btn-success btn-quick w-100">
+                                    <i class="fas fa-users me-2"></i>Clientes
                                 </a>
                             </div>
-                            <div class="col-md-3 mb-2">
-                                <a href="/Facturas" class="btn btn-info w-100">
+                            <div class="col-md-3 col-sm-6">
+                                <a href="/Facturas" class="btn btn-info btn-quick w-100">
                                     <i class="fas fa-receipt me-2"></i>Nueva Factura
                                 </a>
                             </div>
-                            <div class="col-md-3 mb-2">
-                                <a href="/Reportes" class="btn btn-warning w-100">
-                                    <i class="fas fa-chart-bar me-2"></i>Ver Reportes
+                            <div class="col-md-3 col-sm-6">
+                                <a href="/Reportes" class="btn btn-warning btn-quick w-100">
+                                    <i class="fas fa-chart-bar me-2"></i>Reportes
                                 </a>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer con estadísticas adicionales -->
+        <div class="footer-stats">
+            <div class="row">
+                <div class="col-md-6 text-start">
+                    <small>
+                        <i class="fas fa-chart-line me-1"></i>
+                        Total facturado: ₡@Model.TotalIngresos.ToString("N2")
+                    </small>
+                </div>
+                <div class="col-md-6 text-end">
+                    <small>
+                        <i class="fas fa-box me-1"></i>
+                        Stock bajo: @(Model.ProductsStockBajo?.Count ?? 0) productos
+                    </small>
                 </div>
             </div>
         </div>
