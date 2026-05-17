@@ -1119,3 +1119,68 @@ BEGIN
     );
 END;
 GO
+
+-- Insertar SOLO las categorías que NO existen
+INSERT INTO Categorias (nombre_categoria, descripcion, activo)
+SELECT * FROM (VALUES
+    ('Bebidas', 'Gaseosas, jugos, aguas, bebidas energéticas', 1),
+    ('Ferretería', 'Herramientas, clavos, pegamentos', 1),
+    ('Cuidado Personal', 'Shampoo, jabones, cremas, maquillaje', 1),
+    ('Lácteos', 'Leche, yogures, quesos, mantequilla', 1),
+    ('Panadería', 'Pan, galletas, pastelillos', 1),
+    ('Carnes Frías', 'Jamón, salchichas, mortadela', 1),
+    ('Abarrotes', 'Arroz, frijoles, azúcar, sal, aceite', 1),
+    ('Mascotas', 'Alimento para perros, gatos, accesorios', 1),
+    ('Juguetería', 'Juguetes para niños', 1),
+    ('Ropa', 'Prendas de vestir', 1),
+    ('Calzado', 'Zapatos, sandalias, zapatillas', 1)
+) AS nuevas(nombre_categoria, descripcion, activo)
+WHERE NOT EXISTS (
+    SELECT 1 FROM Categorias C WHERE C.nombre_categoria = nuevas.nombre_categoria
+);
+GO
+
+-- Verificar todas las categorías ahora
+SELECT id_categoria, nombre_categoria FROM Categorias ORDER BY nombre_categoria;
+GO
+
+-- Insertar productos con stock bajo
+INSERT INTO Productos (codigo_barras, nombre, descripcion, id_categoria, iva_porcentaje, stock_actual, stock_minimo, activo)
+VALUES 
+('STOCK001', 'Coca Cola 600ml', 'Gaseosa cola', 1, 15.00, 2, 10, 1),
+('STOCK002', 'Pepsi 600ml', 'Gaseosa cola', 1, 15.00, 3, 10, 1),
+('STOCK003', 'Doritos Nacho', 'Tostadas de maíz', 2, 15.00, 1, 8, 1);
+GO
+
+-- Verificar
+SELECT nombre, stock_actual, stock_minimo FROM Productos WHERE stock_actual <= stock_minimo;
+GO
+
+-- Actualizar contraseña del admin (ejecutar en SQL Server)
+UPDATE Usuarios 
+SET password_hash = HASHBYTES('SHA2_256', 'admin123')
+WHERE nombre_usuario = 'admin';
+
+UPDATE Usuarios 
+SET password_hash = HASHBYTES('SHA2_256', 'cajero123')
+WHERE nombre_usuario = 'cajero';
+
+-- Agregar columna activo si no existe
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('Productos') AND name = 'activo')
+BEGIN
+    ALTER TABLE Productos ADD activo BIT NOT NULL DEFAULT 1;
+    PRINT '✅ Columna activo agregada a Productos';
+END
+GO
+
+-- Verificar
+SELECT id_producto, nombre, activo FROM Productos;
+GO
+
+SELECT COLUMN_NAME, DATA_TYPE 
+FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE TABLE_NAME = 'Precios_Promociones';
+
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'Facturas'
