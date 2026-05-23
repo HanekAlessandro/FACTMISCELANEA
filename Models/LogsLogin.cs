@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -29,7 +28,6 @@ namespace FactMiscelanea.Models
         [Column("fecha_intento")]
         public DateTime fecha_intento { get; set; } = DateTime.Now;
 
-        // Propiedades de navegación
         [ForeignKey("id_usuario")]
         public virtual Usuario? Usuario { get; set; }
     }

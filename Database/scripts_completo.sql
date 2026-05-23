@@ -1109,7 +1109,6 @@ PRINT 'Administrador: usuario = admin | password = admin123';
 PRINT 'Cajero: usuario = cajero | password = cajero123';
 PRINT '==================================================';
 
-
 IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
     CREATE TABLE [__EFMigrationsHistory] (

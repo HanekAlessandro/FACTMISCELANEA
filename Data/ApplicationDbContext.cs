@@ -10,7 +10,7 @@ namespace FactMiscelanea.Data
         {
         }
 
-        // Tablas existentes
+        // tablas existentes
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
@@ -24,9 +24,7 @@ namespace FactMiscelanea.Data
         public DbSet<Empresa> Empresas { get; set; }
         public DbSet<PrecioPromocion> PreciosPromociones { get; set; }
 
-        // =========================================================
-        // NUEVAS TABLAS (Agregar estos DbSets)
-        // =========================================================
+        // nuevas tablas
         public DbSet<Compra> Compras { get; set; }
         public DbSet<DetalleCompra> DetalleCompras { get; set; }
         public DbSet<LogsLogin> LogsLogin { get; set; }
@@ -35,7 +33,7 @@ namespace FactMiscelanea.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Tablas existentes
+            // tablas existentes
             modelBuilder.Entity<Categoria>().ToTable("Categorias");
             modelBuilder.Entity<Cliente>().ToTable("Clientes");
             modelBuilder.Entity<Producto>().ToTable("Productos");
@@ -49,55 +47,49 @@ namespace FactMiscelanea.Data
             modelBuilder.Entity<Empresa>().ToTable("Empresa");
             modelBuilder.Entity<PrecioPromocion>().ToTable("Precios_Promociones");
 
-            // =========================================================
-            // NUEVAS TABLAS
-            // =========================================================
+            // nuevas tablas
             modelBuilder.Entity<Compra>().ToTable("Compras");
             modelBuilder.Entity<DetalleCompra>().ToTable("Detalle_Compras");
             modelBuilder.Entity<LogsLogin>().ToTable("Logs_Login");
 
-            // =========================================================
-            // CONFIGURACIONES ADICIONALES PARA LAS NUEVAS TABLAS
-            // =========================================================
-            
-            // Configuración para Compra
+            // configuracion compra
             modelBuilder.Entity<Compra>()
                 .HasKey(c => c.id_compra);
-            
+
             modelBuilder.Entity<Compra>()
                 .Property(c => c.folio)
                 .IsRequired()
                 .HasMaxLength(20);
-            
+
             modelBuilder.Entity<Compra>()
                 .HasOne(c => c.Proveedor)
                 .WithMany()
                 .HasForeignKey(c => c.id_proveedor);
-            
+
             modelBuilder.Entity<Compra>()
                 .HasOne(c => c.Usuario)
                 .WithMany()
                 .HasForeignKey(c => c.id_usuario);
 
-            // Configuración para DetalleCompra
+            // configuracion detalle compra
             modelBuilder.Entity<DetalleCompra>()
                 .HasKey(d => d.id_detalle_compra);
-            
+
             modelBuilder.Entity<DetalleCompra>()
                 .HasOne(d => d.Compra)
                 .WithMany(c => c.Detalles)
                 .HasForeignKey(d => d.id_compra)
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
             modelBuilder.Entity<DetalleCompra>()
                 .HasOne(d => d.Producto)
                 .WithMany()
                 .HasForeignKey(d => d.id_producto);
 
-            // Configuración para LogsLogin
+            // configuracion logs login
             modelBuilder.Entity<LogsLogin>()
                 .HasKey(l => l.id_log);
-            
+
             modelBuilder.Entity<LogsLogin>()
                 .HasOne(l => l.Usuario)
                 .WithMany()

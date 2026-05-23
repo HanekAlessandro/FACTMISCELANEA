@@ -8,27 +8,27 @@ namespace FactMiscelanea.Models
     {
         [Key]
         [Column("id_empresa")]
-        public int IdEmpresa { get; set; } = 1;
+        public int id_empresa { get; set; } = 1;
 
         [Column("nombre_comercial")]
         [Required]
         [StringLength(100)]
-        public string NombreComercial { get; set; } = string.Empty;
+        public string nombre_comercial { get; set; } = string.Empty;
 
         [Column("nit_cedula_juridica")]
         [Required]
         [StringLength(50)]
-        public string NitCedulaJuridica { get; set; } = string.Empty;
+        public string nit_cedula_juridica { get; set; } = string.Empty;
 
         [Column("direccion")]
-        public string? Direccion { get; set; }
+        public string? direccion { get; set; }
 
         [Column("telefono")]
         [StringLength(8)]
-        public string? Telefono { get; set; }
+        public string? telefono { get; set; }
 
         [Column("mensaje_pie_factura")]
         [StringLength(255)]
-        public string? MensajePieFactura { get; set; }
+        public string? mensaje_pie_factura { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace FactMiscelanea.Controllers
             _context = context;
         }
 
-        // Endpoint para obtener información del producto (precio y stock)
+        // endpoint obtener informacion producto
         [HttpGet("ProductoInfo/{id}")]
         public async Task<IActionResult> GetProductoInfo(int id)
         {
@@ -29,26 +29,49 @@ namespace FactMiscelanea.Controllers
                             .Where(pr => pr.id_producto == p.id_producto)
                             .Select(pr => pr.precio_final)
                             .FirstOrDefault(),
+
                         stock = p.stock_actual,
                         nombre = p.nombre
                     })
                     .FirstOrDefaultAsync();
 
                 if (producto == null)
-                    return Ok(new { error = true, message = "Producto no encontrado" });
+                {
+                    return Ok(new
+                    {
+                        error = true,
+                        message = "Producto no encontrado"
+                    });
+                }
 
                 if (producto.precio <= 0)
-                    return Ok(new { error = true, message = "El producto no tiene un precio configurado" });
+                {
+                    return Ok(new
+                    {
+                        error = true,
+                        message = "El producto no tiene precio configurado"
+                    });
+                }
 
-                return Ok(new { error = false, precio = producto.precio, stock = producto.stock, nombre = producto.nombre });
+                return Ok(new
+                {
+                    error = false,
+                    precio = producto.precio,
+                    stock = producto.stock,
+                    nombre = producto.nombre
+                });
             }
             catch (Exception ex)
             {
-                return Ok(new { error = true, message = ex.Message });
+                return Ok(new
+                {
+                    error = true,
+                    message = ex.Message
+                });
             }
         }
 
-        // Endpoint para obtener todos los productos (opcional)
+        // endpoint obtener productos
         [HttpGet("Productos")]
         public async Task<IActionResult> GetProductos()
         {
@@ -60,6 +83,7 @@ namespace FactMiscelanea.Controllers
                     p.nombre,
                     p.codigo_barras,
                     p.stock_actual,
+
                     precio = _context.PreciosPromociones
                         .Where(pr => pr.id_producto == p.id_producto)
                         .Select(pr => pr.precio_final)

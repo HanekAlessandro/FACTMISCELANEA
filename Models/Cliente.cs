@@ -22,7 +22,6 @@ namespace FactMiscelanea.Models
         [Column("telefono")]
         public string telefono { get; set; } = string.Empty;
 
-        // Agregar esta propiedad
         [Column("email")]
         public string email { get; set; } = string.Empty;
 

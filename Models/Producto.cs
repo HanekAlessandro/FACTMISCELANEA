@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FactMiscelanea.Models
 {
@@ -17,8 +15,8 @@ namespace FactMiscelanea.Models
         [Required]
         [StringLength(50)]
         [Column("codigo_barras")]
-        public string codigo_barras 
-        { 
+        public string codigo_barras
+        {
             get => _codigo_barras?.Replace("\n", "").Replace("\r", "").Trim() ?? string.Empty;
             set => _codigo_barras = value?.Replace("\n", "").Replace("\r", "").Trim() ?? string.Empty;
         }
@@ -59,62 +57,44 @@ namespace FactMiscelanea.Models
         [Column("fecha_registro")]
         public DateTime fecha_registro { get; set; } = DateTime.Now;
 
-        // Propiedades de navegación
         [ForeignKey("id_categoria")]
         public virtual Categoria? Categoria { get; set; }
 
         [ForeignKey("id_proveedor_preferente")]
         public virtual Proveedor? ProveedorPreferente { get; set; }
 
-        // Relación con precios y promociones
         public virtual ICollection<PrecioPromocion> PreciosPromociones { get; set; } = new List<PrecioPromocion>();
 
-        // Relación con detalles de factura
         public virtual ICollection<FacturaDetalle> FacturaDetalles { get; set; } = new List<FacturaDetalle>();
 
-        /// <summary>
-        /// Obtiene el precio final actual del producto (considerando promociones activas)
-        /// </summary>
         [NotMapped]
         public decimal PrecioActual
         {
             get
             {
-                var promoActiva = PreciosPromociones?.FirstOrDefault(p => 
-                    p.es_promocional && 
+                var promoActiva = PreciosPromociones?.FirstOrDefault(p =>
+                    p.es_promocional &&
                     (p.fecha_fin_promo == null || p.fecha_fin_promo >= DateOnly.FromDateTime(DateTime.Today)));
-                
+
                 if (promoActiva != null)
                     return promoActiva.precio_final;
-                
+
                 return PreciosPromociones?.FirstOrDefault()?.precio_final ?? 0;
             }
         }
 
-        /// <summary>
-        /// Obtiene el costo de compra actual
-        /// </summary>
         [NotMapped]
         public decimal CostoActual => PreciosPromociones?.FirstOrDefault()?.costo_compra ?? 0;
 
-        /// <summary>
-        /// Calcula el precio con IVA incluido
-        /// </summary>
         [NotMapped]
         public decimal PrecioConIva => PrecioActual * (1 + iva_porcentaje / 100);
 
-        /// <summary>
-        /// Indica si el producto tiene stock bajo
-        /// </summary>
         [NotMapped]
         public bool TieneStockBajo => stock_actual <= stock_minimo;
 
-        /// <summary>
-        /// Indica si el producto tiene promoción activa
-        /// </summary>
         [NotMapped]
-        public bool TienePromocionActiva => PreciosPromociones?.Any(p => 
-            p.es_promocional && 
+        public bool TienePromocionActiva => PreciosPromociones?.Any(p =>
+            p.es_promocional &&
             (p.fecha_fin_promo == null || p.fecha_fin_promo >= DateOnly.FromDateTime(DateTime.Today))) ?? false;
     }
 }

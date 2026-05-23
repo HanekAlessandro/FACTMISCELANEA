@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,7 +20,7 @@ namespace FactMiscelanea.Models
         public string email { get; set; } = string.Empty;
 
         [Column("password_hash")]
-        public byte[] password_hash { get; set; } = new byte[32];  // ← Cambiado a byte[]
+        public byte[] password_hash { get; set; } = new byte[32];
 
         [Column("rol")]
         public string rol { get; set; } = "Cajero";

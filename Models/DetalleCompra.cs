@@ -31,7 +31,6 @@ namespace FactMiscelanea.Models
         [Column("subtotal_linea")]
         public decimal subtotal_linea { get; set; }
 
-        // Propiedades de navegación
         [ForeignKey("id_compra")]
         public virtual Compra? Compra { get; set; }
 

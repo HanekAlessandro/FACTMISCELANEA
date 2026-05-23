@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -28,10 +27,9 @@ namespace FactMiscelanea.Models
 
         [Column("observaciones")]
         [StringLength(255)]
-        public string? Observaciones { get; set; }
+        public string? observaciones { get; set; }
 
-        // Propiedad de navegación
-        [ForeignKey("IdProducto")]
+        [ForeignKey("id_producto")]
         public virtual Producto? Producto { get; set; }
     }
 }

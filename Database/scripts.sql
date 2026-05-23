@@ -1,490 +1,238 @@
-USE [master]
-GO
+use master
+go
 
-IF DB_ID('MiscelaneaMaster') IS NOT NULL
-DROP DATABASE [MiscelaneaMaster]
-GO
+if db_id('MiscelaneaMaster') is not null
+drop database MiscelaneaMaster
+go
 
-CREATE DATABASE [MiscelaneaMaster]
-GO
+create database MiscelaneaMaster
+go
 
-ALTER DATABASE [MiscelaneaMaster]
-SET COMPATIBILITY_LEVEL = 150
-GO
+use MiscelaneaMaster
+go
 
-USE [MiscelaneaMaster]
-GO
+/* Tabla empresa */
 
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
--- =========================================================
--- TABLA EMPRESA
--- =========================================================
-
-CREATE TABLE Empresa(
-
-    id_empresa INT PRIMARY KEY DEFAULT 1,
-
-    nombre_comercial VARCHAR(100) NOT NULL,
-
-    nit_cedula_juridica VARCHAR(50) NOT NULL,
-
-    direccion VARCHAR(MAX),
-
-    telefono VARCHAR(8)
-    CHECK(
-        telefono NOT LIKE '%[^0-9]%'
-        AND LEN(telefono)=8
-    ),
-
-    mensaje_pie_factura VARCHAR(255)
-
+create table Empresa (
+    id_empresa int primary key identity(1,1),
+    nombre_comercial varchar(100) not null,
+    nit_cedula_juridica varchar(50) not null,
+    direccion varchar(255),
+    telefono varchar(8),
+    mensaje_pie_factura varchar(255)
 )
-GO
+go
 
--- =========================================================
--- TABLA CATEGORIAS
--- =========================================================
+/* Tabla categorías */
 
-CREATE TABLE Categorias(
-
-    id_categoria INT PRIMARY KEY IDENTITY(1,1),
-
-    nombre_categoria VARCHAR(50)
-    NOT NULL
-    UNIQUE
-
+create table Categorias (
+    id_categoria int primary key identity(1,1),
+    nombre_categoria varchar(50) not null
 )
-GO
+go
 
--- =========================================================
--- TABLA METODOS DE PAGO
--- =========================================================
+/* Tabla métodos pago */
 
-CREATE TABLE Metodos_Pago(
-
-    id_metodo INT PRIMARY KEY IDENTITY(1,1),
-
-    nombre_metodo VARCHAR(30)
-    NOT NULL
-    UNIQUE
-
+create table Metodos_Pago (
+    id_metodo int primary key identity(1,1),
+    nombre_metodo varchar(30) not null
 )
-GO
+go
 
--- =========================================================
--- TABLA USUARIOS
--- =========================================================
+/* Tabla usuarios */
 
-CREATE TABLE Usuarios(
-
-    id_usuario INT PRIMARY KEY IDENTITY(1,1),
-
-    nombre_completo VARCHAR(100)
-    NOT NULL,
-
-    nombre_usuario VARCHAR(50)
-    UNIQUE
-    NOT NULL,
-
-    password_hash VARCHAR(255)
-    NOT NULL,
-
-    rol VARCHAR(20)
-    CHECK(
-        rol IN ('Administrador','Cajero')
-    )
-
+create table Usuarios (
+    id_usuario int primary key identity(1,1),
+    nombre_completo varchar(100) not null,
+    nombre_usuario varchar(50) not null,
+    password varchar(100) not null,
+    rol varchar(20)
 )
-GO
+go
 
--- =========================================================
--- TABLA PROVEEDORES
--- =========================================================
+/* Tabla proveedores */
 
-CREATE TABLE Proveedores(
-
-    id_proveedor INT PRIMARY KEY IDENTITY(1,1),
-
-    nombre_empresa VARCHAR(100)
-    NOT NULL,
-
-    contacto_nombre VARCHAR(100),
-
-    telefono VARCHAR(8)
-    CHECK(
-        telefono NOT LIKE '%[^0-9]%'
-        AND LEN(telefono)=8
-    ),
-
-    direccion VARCHAR(MAX)
-
+create table Proveedores (
+    id_proveedor int primary key identity(1,1),
+    nombre_empresa varchar(100) not null,
+    contacto_nombre varchar(100),
+    telefono varchar(8),
+    direccion varchar(255)
 )
-GO
+go
 
--- =========================================================
--- TABLA CLIENTES
--- =========================================================
+/* Tabla clientes */
 
-CREATE TABLE Clientes(
-
-    id_cliente INT PRIMARY KEY IDENTITY(1,1),
-
-    identificacion VARCHAR(20)
-    UNIQUE,
-
-    nombre VARCHAR(100)
-    DEFAULT 'Público General',
-
-    direccion VARCHAR(255),
-
-    telefono VARCHAR(8)
-    CHECK(
-        telefono NOT LIKE '%[^0-9]%'
-        AND LEN(telefono)=8
-    ),
-
-    puntos_lealtad INT
-    DEFAULT 0
-    CHECK(puntos_lealtad >= 0)
-
+create table Clientes (
+    id_cliente int primary key identity(1,1),
+    identificacion varchar(20),
+    nombre varchar(100),
+    direccion varchar(255),
+    telefono varchar(8)
 )
-GO
+go
 
--- =========================================================
--- TABLA PRODUCTOS
--- =========================================================
+/* Tabla productos */
 
-CREATE TABLE Productos(
+create table Productos (
+    id_producto int primary key identity(1,1),
+    codigo_barras varchar(50) not null,
+    nombre varchar(100) not null,
+    descripcion varchar(255),
+    id_categoria int,
+    iva_porcentaje decimal(5,2),
+    stock_actual int,
+    stock_minimo int,
 
-    id_producto INT PRIMARY KEY IDENTITY(1,1),
-
-    codigo_barras VARCHAR(50)
-    UNIQUE
-    NOT NULL,
-
-    nombre VARCHAR(100)
-    NOT NULL,
-
-    descripcion VARCHAR(255),
-
-    id_categoria INT,
-
-    iva_porcentaje DECIMAL(5,2)
-    DEFAULT 15.00
-    CHECK(iva_porcentaje >= 0),
-
-    stock_actual INT
-    DEFAULT 0
-    CHECK(stock_actual >= 0),
-
-    stock_minimo INT
-    DEFAULT 5
-    CHECK(stock_minimo >= 0),
-
-    CONSTRAINT FK_Productos_Categorias
-    FOREIGN KEY(id_categoria)
-    REFERENCES Categorias(id_categoria)
-
+    foreign key (id_categoria)
+    references Categorias(id_categoria)
 )
-GO
+go
 
--- =========================================================
--- TABLA PRECIOS Y PROMOCIONES
--- =========================================================
+/* Tabla precios promociones */
 
-CREATE TABLE Precios_Promociones(
+create table Precios_Promociones (
+    id_precio int primary key identity(1,1),
+    id_producto int,
+    costo_compra decimal(10,2),
+    precio_final decimal(10,2),
+    es_promocional bit,
+    fecha_inicio_promo date,
+    fecha_fin_promo date,
 
-    id_precio INT PRIMARY KEY IDENTITY(1,1),
-
-    id_producto INT NOT NULL,
-
-    costo_compra DECIMAL(10,2)
-    NOT NULL
-    CHECK(costo_compra >= 0),
-
-    precio_sugerido DECIMAL(10,2)
-    CHECK(precio_sugerido >= 0),
-
-    precio_final DECIMAL(10,2)
-    NOT NULL
-    CHECK(precio_final >= 0),
-
-    es_promocional BIT DEFAULT 0,
-
-    fecha_inicio_promo DATE,
-
-    fecha_fin_promo DATE,
-
-    CONSTRAINT FK_Precios_Productos
-    FOREIGN KEY(id_producto)
-    REFERENCES Productos(id_producto)
-
+    foreign key (id_producto)
+    references Productos(id_producto)
 )
-GO
+go
 
--- =========================================================
--- TABLA FACTURAS
--- =========================================================
+/* Tabla facturas */
 
-CREATE TABLE Facturas(
+create table Facturas (
+    id_factura int primary key identity(1,1),
+    folio varchar(20),
+    fecha_hora datetime default getdate(),
+    id_cliente int,
+    id_metodo_pago int,
+    id_usuario int,
+    subtotal decimal(10,2),
+    iva decimal(10,2),
+    total decimal(10,2),
 
-    id_factura INT PRIMARY KEY IDENTITY(1,1),
+    foreign key (id_cliente)
+    references Clientes(id_cliente),
 
-    folio VARCHAR(20)
-    UNIQUE
-    NOT NULL,
+    foreign key (id_metodo_pago)
+    references Metodos_Pago(id_metodo),
 
-    fecha_hora DATETIME
-    DEFAULT GETDATE(),
-
-    id_cliente INT,
-
-    id_metodo_pago INT,
-
-    id_usuario INT,
-
-    subtotal_sin_iva DECIMAL(10,2)
-    CHECK(subtotal_sin_iva >= 0),
-
-    total_iva DECIMAL(10,2)
-    CHECK(total_iva >= 0),
-
-    total_final DECIMAL(10,2)
-    CHECK(total_final >= 0),
-
-    CONSTRAINT FK_Facturas_Clientes
-    FOREIGN KEY(id_cliente)
-    REFERENCES Clientes(id_cliente),
-
-    CONSTRAINT FK_Facturas_MetodosPago
-    FOREIGN KEY(id_metodo_pago)
-    REFERENCES Metodos_Pago(id_metodo),
-
-    CONSTRAINT FK_Facturas_Usuarios
-    FOREIGN KEY(id_usuario)
-    REFERENCES Usuarios(id_usuario)
-
+    foreign key (id_usuario)
+    references Usuarios(id_usuario)
 )
-GO
+go
 
--- =========================================================
--- TABLA DETALLE FACTURA
--- =========================================================
+/* Tabla detalle factura */
 
-CREATE TABLE Factura_Detalle(
+create table Factura_Detalle (
+    id_detalle int primary key identity(1,1),
+    id_factura int,
+    id_producto int,
+    cantidad int,
+    precio_unitario decimal(10,2),
+    subtotal decimal(10,2),
 
-    id_detalle INT PRIMARY KEY IDENTITY(1,1),
+    foreign key (id_factura)
+    references Facturas(id_factura),
 
-    id_factura INT NOT NULL,
-
-    id_producto INT NOT NULL,
-
-    cantidad INT
-    NOT NULL
-    CHECK(cantidad > 0),
-
-    precio_unitario_aplicado DECIMAL(10,2)
-    CHECK(precio_unitario_aplicado >= 0),
-
-    iva_aplicado DECIMAL(10,2)
-    CHECK(iva_aplicado >= 0),
-
-    subtotal_linea DECIMAL(10,2)
-    CHECK(subtotal_linea >= 0),
-
-    CONSTRAINT FK_Detalle_Factura
-    FOREIGN KEY(id_factura)
-    REFERENCES Facturas(id_factura),
-
-    CONSTRAINT FK_Detalle_Producto
-    FOREIGN KEY(id_producto)
-    REFERENCES Productos(id_producto)
-
+    foreign key (id_producto)
+    references Productos(id_producto)
 )
-GO
+go
 
--- =========================================================
--- TABLA DEVOLUCIONES
--- =========================================================
+/* Tabla devoluciones */
 
-CREATE TABLE Devoluciones(
+create table Devoluciones (
+    id_devolucion int primary key identity(1,1),
+    id_factura int,
+    id_producto int,
+    cantidad int,
+    motivo varchar(255),
+    fecha_devolucion datetime default getdate(),
 
-    id_devolucion INT PRIMARY KEY IDENTITY(1,1),
+    foreign key (id_factura)
+    references Facturas(id_factura),
 
-    id_factura INT,
-
-    id_producto INT,
-
-    cantidad INT
-    NOT NULL
-    CHECK(cantidad > 0),
-
-    motivo VARCHAR(255),
-
-    fecha_devolucion DATETIME
-    DEFAULT GETDATE(),
-
-    id_usuario_autoriza INT,
-
-    CONSTRAINT FK_Devoluciones_Factura
-    FOREIGN KEY(id_factura)
-    REFERENCES Facturas(id_factura),
-
-    CONSTRAINT FK_Devoluciones_Producto
-    FOREIGN KEY(id_producto)
-    REFERENCES Productos(id_producto),
-
-    CONSTRAINT FK_Devoluciones_Usuario
-    FOREIGN KEY(id_usuario_autoriza)
-    REFERENCES Usuarios(id_usuario)
-
+    foreign key (id_producto)
+    references Productos(id_producto)
 )
-GO
+go
 
--- =========================================================
--- TABLA KARDEX
--- =========================================================
+/* Tabla kardex */
 
-CREATE TABLE Kardex(
+create table Kardex (
+    id_movimiento int primary key identity(1,1),
+    id_producto int,
+    tipo_movimiento varchar(20),
+    cantidad int,
+    fecha datetime default getdate(),
+    observaciones varchar(255),
 
-    id_movimiento INT PRIMARY KEY IDENTITY(1,1),
-
-    id_producto INT NOT NULL,
-
-    tipo_movimiento VARCHAR(20)
-    CHECK(
-        tipo_movimiento IN
-        (
-            'ENTRADA',
-            'SALIDA',
-            'DEVOLUCION',
-            'AJUSTE'
-        )
-    ),
-
-    cantidad INT NOT NULL,
-
-    fecha DATETIME
-    DEFAULT GETDATE(),
-
-    referencia_id INT,
-
-    observaciones VARCHAR(255),
-
-    CONSTRAINT FK_Kardex_Productos
-    FOREIGN KEY(id_producto)
-    REFERENCES Productos(id_producto)
-
+    foreign key (id_producto)
+    references Productos(id_producto)
 )
-GO
+go
 
--- =========================================================
--- TRIGGER VENTAS
--- =========================================================
+/* Trigger ventas */
 
-CREATE TRIGGER trg_ProcesarVenta
-ON Factura_Detalle
-AFTER INSERT
-AS
-BEGIN
+create trigger trg_ProcesarVenta
+on Factura_Detalle
+after insert
+as
+begin
 
-    SET NOCOUNT ON;
+    update P
+    set P.stock_actual = P.stock_actual - i.cantidad
+    from Productos P
+    inner join inserted i
+        on P.id_producto = i.id_producto
 
-    IF EXISTS(
-        SELECT 1
-        FROM Productos P
-        INNER JOIN inserted i
-        ON P.id_producto = i.id_producto
-        WHERE P.stock_actual < i.cantidad
-    )
-    BEGIN
-
-        RAISERROR('Stock insuficiente.',16,1);
-
-        ROLLBACK TRANSACTION;
-
-        RETURN;
-
-    END
-
-    UPDATE P
-    SET P.stock_actual =
-    P.stock_actual - i.cantidad
-
-    FROM Productos P
-
-    INNER JOIN inserted i
-    ON P.id_producto = i.id_producto;
-
-    INSERT INTO Kardex
-    (
+    insert into Kardex (
         id_producto,
         tipo_movimiento,
         cantidad,
-        referencia_id,
         observaciones
     )
-
-    SELECT
+    select
         id_producto,
         'SALIDA',
         cantidad,
-        id_factura,
-        'Venta Facturada'
+        'Venta realizada'
+    from inserted
 
-    FROM inserted;
+end
+go
 
-END
-GO
+/* Vista reporte mensual */
 
--- =========================================================
--- VISTA REPORTE MENSUAL
--- =========================================================
+create view Vista_Reporte_Mensual
+as
 
-CREATE VIEW Vista_Reporte_Mensual
-AS
+select
+    format(fecha_hora,'yyyy-MM') as Mes,
+    count(id_factura) as Total_Ventas,
+    sum(total) as Total_Ingresos
+from Facturas
+group by format(fecha_hora,'yyyy-MM')
+go
 
-SELECT
+/* Vista alerta stock */
 
-    FORMAT(fecha_hora,'yyyy-MM') AS Mes,
+create view Vista_Alerta_Stock
+as
 
-    COUNT(DISTINCT id_factura)
-    AS Total_Ventas_Contadas,
-
-    SUM(subtotal_sin_iva)
-    AS Subtotal_Neto,
-
-    SUM(total_iva)
-    AS Total_Impuestos,
-
-    SUM(total_final)
-    AS Ingreso_Bruto
-
-FROM Facturas
-
-GROUP BY FORMAT(fecha_hora,'yyyy-MM')
-GO
-
--- =========================================================
--- VISTA ALERTA STOCK
--- =========================================================
-
-CREATE VIEW Vista_Alerta_Stock
-AS
-
-SELECT
-
+select
     codigo_barras,
     nombre,
     stock_actual,
     stock_minimo
-
-FROM Productos
-
-WHERE stock_actual <= stock_minimo
-GO
+from Productos
+where stock_actual <= stock_minimo
+go

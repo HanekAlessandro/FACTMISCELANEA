@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -48,7 +46,6 @@ namespace FactMiscelanea.Models
         [Column("observaciones")]
         public string observaciones { get; set; } = string.Empty;
 
-        // Propiedades de navegación
         [ForeignKey("id_proveedor")]
         public virtual Proveedor? Proveedor { get; set; }
 

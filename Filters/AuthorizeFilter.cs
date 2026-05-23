@@ -8,7 +8,7 @@ namespace FactMiscelanea.Filters
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            // Rutas que NO requieren autenticación
+            // rutas publicas
             var publicPaths = new[]
             {
                 "/Account/Login",
@@ -18,20 +18,20 @@ namespace FactMiscelanea.Filters
 
             var currentPath = context.HttpContext.Request.Path;
 
-            // Verificar si la ruta actual es pública
+            // validar rutas publicas
             foreach (var path in publicPaths)
             {
                 if (currentPath.StartsWithSegments(path))
                 {
-                    return; // Permite acceso sin autenticación
+                    return;
                 }
             }
 
-            // Verificar si el usuario está autenticado
+            // validar sesion
             var userId = context.HttpContext.Session.GetInt32("UsuarioId");
+
             if (userId == null)
             {
-                // Redirigir al login
                 context.Result = new RedirectToPageResult("/Account/Login");
             }
         }
