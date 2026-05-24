@@ -11,42 +11,12 @@
     <title>@ViewData["Title"]</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 30px;
-        }
-        .report-container {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .header-report {
-            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            color: #333;
-        }
-        .urgent {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        @* Usar doble @@ para keyframes en Razor *@
-        @@keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .report-container {
-            animation: fadeIn 0.5s ease-out;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/Reportes/stock-bajo.css" />
 </head>
 <body>
     <div class="container report-container">
         <div class="header-report">
-            <h1><i class="fas fa-exclamation-triangle me-3"></i>Productos con Stock Bajo</h1>
+            <h1>Productos con Stock Bajo</h1>
             <p class="mb-0">Productos que necesitan reabastecimiento inmediato</p>
             <small>Fecha: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</small>
         </div>
@@ -57,20 +27,20 @@
                 <table class="table table-bordered" id="tablaStock">
                     <thead>
                         <tr>
-                            <th><i class="fas fa-barcode me-1"></i>Código</th>
-                            <th><i class="fas fa-tag me-1"></i>Producto</th>
-                            <th><i class="fas fa-folder me-1"></i>Categoría</th>
-                            <th><i class="fas fa-box me-1"></i>Stock Actual</th>
-                            <th><i class="fas fa-flag me-1"></i>Stock Mínimo</th>
-                            <th><i class="fas fa-chart-line me-1"></i>Diferencia</th>
-                            <th><i class="fas fa-clock me-1"></i>Urgencia</th>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Stock Actual</th>
+                            <th>Stock Mínimo</th>
+                            <th>Diferencia</th>
+                            <th>Urgencia</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var producto in Model.ProductosStockBajo)
                         {
                             int diferencia = producto.stock_minimo - producto.stock_actual;
-                            string urgencia = diferencia <= 2 ? "🔥 URGENTE" : "⚠️ Moderada";
+                            string urgencia = diferencia <= 2 ? "Muy urgente" : "Moderada";
                             string claseUrgencia = diferencia <= 2 ? "urgent" : "";
                             <tr>
                                 <td class="@claseUrgencia">@producto.codigo_barras</td>
@@ -87,53 +57,30 @@
             </div>
 
             <div class="alert alert-warning mt-3">
-                <i class="fas fa-info-circle me-2"></i>
                 <strong>Total:</strong> @Model.ProductosStockBajo.Count productos necesitan reabastecimiento
             </div>
         }
         else
         {
             <div class="alert alert-success">
-                <i class="fas fa-check-circle me-2"></i>
-                ¡Excelente! Todos los productos tienen stock suficiente.
+                Muy bien. Todos los productos tienen stock suficiente.
             </div>
         }
 
         <div class="text-end mt-4">
             <button onclick="window.print()" class="btn btn-primary">
-                <i class="fas fa-print me-2"></i>Imprimir Reporte
+                Imprimir Reporte
             </button>
             <button onclick="exportToExcel()" class="btn btn-success">
-                <i class="fas fa-file-excel me-2"></i>Exportar a Excel
+                Exportar a Excel
             </button>
             <a href="/Reportes" class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Volver
+                Volver
             </a>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script>
-        function exportToExcel() {
-            var table = document.getElementById("tablaStock");
-            if (!table) {
-                alert("No hay datos para exportar");
-                return;
-            }
-            var html = table.outerHTML;
-            var blob = new Blob([html], { type: "application/vnd.ms-excel" });
-            var link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            var fecha = new Date();
-            var fechaStr = fecha.getFullYear() + 
-                          ("0" + (fecha.getMonth() + 1)).slice(-2) + 
-                          ("0" + fecha.getDate()).slice(-2) + "_" +
-                          ("0" + fecha.getHours()).slice(-2) + 
-                          ("0" + fecha.getMinutes()).slice(-2);
-            link.download = "StockBajo_" + fechaStr + ".xls";
-            link.click();
-            URL.revokeObjectURL(link.href);
-        }
-    </script>
+    <script src="~/js/Reportes/stock-bajo.js"></script>
 </body>
 </html>

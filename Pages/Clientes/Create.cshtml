@@ -9,7 +9,7 @@
         <div class="col-md-6 offset-md-3">
             <div class="card shadow">
                 <div class="card-header bg-success text-white">
-                    <h3><i class="fas fa-user-plus me-2"></i>Crear Cliente</h3>
+                    <h3>Crear Cliente</h3>
                 </div>
                 <div class="card-body">
                     <form method="post">
@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label>Email</label>
+                            <label>Correo electrónico</label>
                             <input asp-for="cliente.email" type="email" class="form-control" />
                             <span asp-validation-for="cliente.email" class="text-danger"></span>
                         </div>
@@ -43,13 +43,13 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-save me-2"></i>Guardar Cliente
+                            Guardar Cliente
                         </button>
                     </form>
                 </div>
                 <div class="card-footer">
                     <a href="/Clientes" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left me-2"></i>Volver
+                        Volver
                     </a>
                 </div>
             </div>

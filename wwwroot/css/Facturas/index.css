@@ -1,0 +1,104 @@
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.main-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 30px;
+    overflow: hidden;
+}
+
+.btn-facturar {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+    padding: 12px 25px;
+    font-weight: 600;
+}
+
+.btn-facturar:hover {
+    transform: translateY(-2px);
+}
+
+.table-responsive {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.table-facturas {
+    width: 100%;
+    table-layout: fixed;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.table-facturas thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.table-facturas th {
+    text-align: center;
+    padding: 15px;
+    white-space: nowrap;
+}
+
+.table-facturas td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.col-folio {
+    width: 180px;
+}
+
+.col-fecha {
+    width: 180px;
+}
+
+.col-cliente {
+    width: 200px;
+}
+
+.col-total {
+    width: 140px;
+}
+
+.col-estado {
+    width: 130px;
+}
+
+.col-usuario {
+    width: 150px;
+}
+
+.col-acciones {
+    width: 180px;
+}
+
+.badge-anulada {
+    background-color: #dc3545;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.badge-normal {
+    background-color: #28a745;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.btn-accion {
+    margin: 2px;
+}

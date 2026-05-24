@@ -1,0 +1,39 @@
+.container.mt-4 {
+    margin-top: 1.5rem;
+}
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+    border-radius: 0.5rem;
+}
+.card-header {
+    background-color: #ffc107;
+    color: #212529;
+    border-bottom: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+.card-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+.card-body {
+    padding: 1.5rem;
+}
+.card-footer {
+    background-color: transparent;
+    border-top: 1px solid rgba(0,0,0,0.125);
+    padding: 1rem 1.5rem;
+}
+.form-control:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(255,193,7,0.25);
+}
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+}
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+    color: #212529;
+}

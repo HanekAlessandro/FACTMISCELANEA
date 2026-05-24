@@ -11,38 +11,7 @@
     <title>@ViewData["Title"]</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 50px 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .delete-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            padding: 40px;
-            max-width: 600px;
-            margin: auto;
-        }
-        .warning-icon {
-            font-size: 80px;
-            color: #e53e3e;
-            margin-bottom: 20px;
-        }
-        .info-icon {
-            font-size: 60px;
-            color: #ed8936;
-            margin-bottom: 20px;
-        }
-        .product-details {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/Productos/delete.css" />
 </head>
 <body>
     <div class="container">
@@ -54,15 +23,15 @@
                 </div>
                 <h3 class="text-warning">No se puede eliminar</h3>
                 <p>El producto <strong>@Model.Producto.nombre</strong> no puede ser eliminado porque tiene registros relacionados.</p>
-                <p class="text-muted">El producto será <strong>desactivado</strong> para mantener la integridad de los datos.</p>
+                <p class="text-muted">El producto será desactivado para mantener el orden de los datos.</p>
                 
                 <form method="post">
                     <input type="hidden" asp-for="Producto.id_producto" />
                     <button type="submit" class="btn btn-warning">
-                        <i class="fas fa-ban me-2"></i>Desactivar Producto
+                        Desactivar Producto
                     </button>
                     <a href="/Productos" class="btn btn-secondary ms-2">
-                        <i class="fas fa-arrow-left me-2"></i>Cancelar
+                        Cancelar
                     </a>
                 </form>
             }
@@ -71,7 +40,7 @@
                 <div class="warning-icon">
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                <h3>Confirmar Eliminación</h3>
+                <h3>Confirmar eliminación</h3>
                 <p>¿Estás seguro de eliminar el producto <strong>@Model.Producto.nombre</strong>?</p>
                 
                 <div class="product-details text-start">
@@ -86,10 +55,10 @@
                 <form method="post">
                     <input type="hidden" asp-for="Producto.id_producto" />
                     <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-trash me-2"></i>Sí, Eliminar
+                        Sí, eliminar
                     </button>
                     <a href="/Productos" class="btn btn-secondary ms-2">
-                        <i class="fas fa-times me-2"></i>Cancelar
+                        Cancelar
                     </a>
                 </form>
             }

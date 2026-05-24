@@ -1,0 +1,36 @@
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.details-container {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.header-factura {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    color: white;
+}
+@media print {
+    body {
+        background: white;
+        padding: 0;
+        margin: 0;
+    }
+    .details-container {
+        box-shadow: none;
+        padding: 15px;
+    }
+    .no-print {
+        display: none !important;
+    }
+    .header-factura {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

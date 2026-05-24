@@ -1,0 +1,144 @@
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 30px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.header-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.btn-primary-gradient {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 10px 25px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.btn-primary-gradient:hover {
+    transform: translateY(-2px);
+    color: #764ba2;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.table tbody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.search-box {
+    position: relative;
+    max-width: 350px;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    padding-left: 40px;
+    border-radius: 25px;
+    border: 2px solid #e2e8f0;
+    height: 45px;
+    width: 100%;
+}
+
+.search-box input:focus {
+    border-color: #667eea;
+    outline: none;
+}
+
+.search-box i {
+    position: absolute;
+    left: 15px;
+    top: 14px;
+    color: #a0aec0;
+}
+
+.btn-edit {
+    background-color: #ed8936;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-right: 5px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.btn-edit:hover {
+    background-color: #dd6b20;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.btn-delete:hover {
+    background-color: #c53030;
+    color: white;
+}
+
+.badge-cliente {
+    background: #e2e8f0;
+    color: #4a5568;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.stats-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 12px 20px;
+    margin-top: 20px;
+}
+
+.alert {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}

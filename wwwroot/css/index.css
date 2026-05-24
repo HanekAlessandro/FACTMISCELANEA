@@ -1,0 +1,122 @@
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.welcome-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.user-info {
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 8px 15px;
+    display: inline-block;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.stat-icon {
+    font-size: 45px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin-bottom: 10px;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #2d3748;
+}
+
+.stat-label {
+    color: #718096;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.stock-warning {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.stock-warning:hover {
+    transform: translateX(5px);
+}
+
+.stock-warning-danger {
+    background-color: #f8d7da;
+    border-left-color: #dc3545;
+}
+
+.card-header {
+    font-weight: 600;
+    border-bottom: none;
+}
+
+.btn-quick {
+    padding: 12px;
+    font-weight: 500;
+    transition: transform 0.2s;
+}
+
+.btn-quick:hover {
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.greeting {
+    font-size: 1.2rem;
+    margin-top: 15px;
+}
+
+.badge-role {
+    background: rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+}
+
+.footer-stats {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #718096;
+}

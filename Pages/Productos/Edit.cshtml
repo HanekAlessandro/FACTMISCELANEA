@@ -9,7 +9,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="card shadow">
                 <div class="card-header bg-warning text-dark">
-                    <h3><i class="fas fa-edit me-2"></i>Editar Producto</h3>
+                    <h3>Editar Producto</h3>
                 </div>
                 <div class="card-body">
                     <form method="post">
@@ -40,13 +40,13 @@
                                 <div class="mb-3">
                                     <label>Categoría</label>
                                     <select asp-for="Producto.id_categoria" class="form-control" asp-items="@Model.CategoriasList">
-                                        <option value="">Seleccione una categoría</option>
+                                        <option value="">Selecciona una categoría</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label>Precio de Venta (₡)</label>
+                                    <label>Precio de Venta en colones</label>
                                     <input asp-for="Precio" class="form-control" type="number" step="0.01" required />
                                 </div>
                             </div>
@@ -67,14 +67,14 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label>IVA (%)</label>
+                                    <label>IVA en porcentaje</label>
                                     <input asp-for="Producto.iva_porcentaje" class="form-control" step="0.01" />
                                 </div>
                             </div>
                         </div>
 
                         <button type="submit" class="btn btn-warning w-100">
-                            <i class="fas fa-save me-2"></i>Actualizar Producto
+                            Actualizar Producto
                         </button>
                     </form>
                 </div>

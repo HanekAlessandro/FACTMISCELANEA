@@ -1,0 +1,22 @@
+.container mt-4 {
+    margin-top: 1.5rem;
+}
+.card {
+    border-radius: 0.5rem;
+}
+.card-header {
+    padding: 1rem;
+    border-bottom: none;
+}
+.card-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}

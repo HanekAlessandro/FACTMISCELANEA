@@ -1,0 +1,513 @@
+/* ============================================
+   CONFIGURACIÓN BASE RESPONSIVA - CARTOON B/N
+   ============================================ */
+
+/* Reset y configuración global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+/* ============================================
+   MEDIA QUERIES POR TAMAÑO DE PANTALLA
+   ============================================ */
+
+/* Pantallas muy pequeñas (teléfonos, menos de 576px) */
+@media (max-width: 575.98px) {
+    html {
+        font-size: 14px;
+    }
+    
+    body {
+        padding: 10px;
+        background-color: #f0f0f0;
+    }
+    
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    /* Tarjetas estilo cartoon */
+    .card {
+        margin-bottom: 15px;
+        border: 3px solid #000000;
+        border-radius: 20px;
+        box-shadow: 5px 5px 0px #aaaaaa;
+        background-color: #ffffff;
+    }
+    
+    .card-header h3, 
+    .card-header h5 {
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+    
+    /* Tablas */
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .table thead th,
+    .table tbody td {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        border: 2px solid #000000;
+    }
+    
+    .table thead th {
+        background-color: #e0e0e0;
+        font-weight: 800;
+    }
+    
+    /* Botones cartoon */
+    .btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+        width: 100%;
+        margin-bottom: 8px;
+        border: 3px solid #000000;
+        border-radius: 40px;
+        background-color: #ffffff;
+        color: #000000;
+        font-weight: 700;
+        box-shadow: 3px 3px 0px #999999;
+        transition: 0.05s linear;
+    }
+    
+    .btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0px #999999;
+    }
+    
+    .btn-primary {
+        background-color: #333333;
+        color: white;
+        border-color: #000000;
+    }
+    
+    .btn-primary:hover {
+        background-color: #555555;
+    }
+    
+    .btn-group-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    /* Formularios */
+    .form-control,
+    .form-select {
+        font-size: 16px;
+        padding: 10px 12px;
+        border: 3px solid #000000;
+        border-radius: 15px;
+        background-color: #ffffff;
+    }
+    
+    input, select, textarea {
+        font-size: 16px;
+    }
+    
+    /* Modales cartoon */
+    .modal-dialog {
+        margin: 10px;
+    }
+    
+    .modal-body {
+        padding: 15px;
+    }
+    
+    .modal-content {
+        border: 4px solid #000000;
+        border-radius: 30px;
+        box-shadow: 10px 10px 0px rgba(0,0,0,0.2);
+        background-color: #ffffff;
+    }
+    
+    /* Grid */
+    .row {
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+    
+    .col, [class*="col-"] {
+        padding-left: 8px;
+        padding-right: 8px;
+        margin-bottom: 15px;
+    }
+    
+    /* Dashboard - tarjetas de estadísticas */
+    .stat-number {
+        font-size: 24px;
+        font-weight: 800;
+        color: #000000;
+    }
+    
+    .stat-icon {
+        font-size: 32px;
+    }
+    
+    /* Navegación cartoon */
+    .navbar-brand {
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+    
+    .nav-link {
+        padding: 8px 0;
+        font-weight: 600;
+    }
+    
+    /* Footer cartoon */
+    .footer {
+        text-align: center;
+        background-color: #e0e0e0;
+        border-top: 3px solid #000000;
+        border-bottom: 3px solid #000000;
+        padding: 20px 0;
+    }
+    
+    .footer .col-md-6 {
+        margin-bottom: 10px;
+    }
+    
+    .footer .text-end {
+        text-align: center !important;
+    }
+    
+    /* Tarjetas de reportes */
+    .card-reporte {
+        margin-bottom: 20px;
+        border: 3px solid #000000;
+        border-radius: 20px;
+        background-color: #ffffff;
+    }
+    
+    /* Encabezados */
+    h1 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        border-left: 8px solid #000000;
+        padding-left: 12px;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 800;
+    }
+    
+    h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+}
+
+/* Pantallas pequeñas (teléfonos en horizontal, 576px - 767px) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    html {
+        font-size: 15px;
+    }
+    
+    body {
+        padding: 15px;
+        background-color: #f0f0f0;
+    }
+    
+    .btn {
+        padding: 8px 20px;
+        border: 3px solid #000000;
+        border-radius: 40px;
+        background-color: #ffffff;
+        font-weight: 700;
+        box-shadow: 3px 3px 0px #999999;
+    }
+    
+    .btn:active {
+        transform: translate(2px, 2px);
+    }
+    
+    .btn-group-mobile {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .btn-group-mobile .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+    
+    .table thead th,
+    .table tbody td {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        border: 2px solid #000000;
+    }
+    
+    .footer {
+        text-align: center;
+    }
+    
+    .footer .text-end {
+        text-align: center !important;
+        margin-top: 10px;
+    }
+}
+
+/* Pantallas medianas (tablets, 768px - 991px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    html {
+        font-size: 15px;
+    }
+    
+    .container {
+        max-width: 95%;
+    }
+    
+    .table thead th,
+    .table tbody td {
+        padding: 12px 15px;
+        border: 2px solid #000000;
+    }
+    
+    .table thead th {
+        background-color: #e0e0e0;
+    }
+    
+    .btn-group-tablet {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .col-md-3, .col-md-4, .col-md-6 {
+        margin-bottom: 20px;
+    }
+}
+
+/* Pantallas grandes (desktops, 992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+/* Pantallas extra grandes (1200px y más) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+/* ============================================
+   ORIENTACIÓN ESPECÍFICA
+   ============================================ */
+
+/* Modo paisaje en móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+    body {
+        padding: 10px;
+    }
+    
+    .main-content {
+        min-height: auto;
+    }
+    
+    .card {
+        margin-bottom: 15px;
+    }
+}
+
+/* ============================================
+   AJUSTES PARA ELEMENTOS ESPECÍFICOS
+   ============================================ */
+
+/* Tablas responsivas con scroll horizontal */
+.table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+}
+
+/* Tarjetas que se apilan en móviles */
+.card-deck-responsive {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card-deck-responsive .card {
+    flex: 1 1 250px;
+    border: 3px solid #000000;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow: 6px 6px 0px #aaaaaa;
+}
+
+/* Formularios responsivos */
+.form-row-responsive {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.form-row-responsive .form-group {
+    flex: 1 1 200px;
+}
+
+/* Botones de acción en tablas */
+.action-buttons {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.action-buttons .btn {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+}
+
+@media (max-width: 576px) {
+    .action-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .action-buttons .btn {
+        width: 100%;
+    }
+}
+
+/* Búsqueda responsiva */
+.search-box {
+    width: 100%;
+    max-width: 100%;
+}
+
+.search-box input {
+    border: 3px solid #000000;
+    border-radius: 40px;
+    padding: 10px 15px;
+}
+
+@media (min-width: 768px) {
+    .search-box {
+        max-width: 350px;
+    }
+}
+
+/* Gráficos responsivos */
+canvas, 
+.chart-container {
+    max-width: 100%;
+    height: auto !important;
+    border: 2px solid #000000;
+    border-radius: 15px;
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+/* Imágenes responsivas */
+img {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #000000;
+    border-radius: 15px;
+}
+
+/* Alertas responsivas cartoon */
+.alert {
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    border: 3px solid #000000;
+    border-radius: 20px;
+    background-color: #e8e8e8;
+    color: #000000;
+    font-weight: 600;
+}
+
+.alert .btn-close {
+    font-size: 0.7rem;
+}
+
+/* ============================================
+   MEJORAS DE TACTILIDAD PARA MÓVILES
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Aumentar área de clic para botones */
+    .btn,
+    .nav-link,
+    .btn-edit,
+    .btn-delete {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Espaciado entre elementos táctiles */
+    .list-group-item {
+        padding: 15px;
+        border: 2px solid #000000;
+        background-color: #ffffff;
+        margin-bottom: 5px;
+        border-radius: 12px;
+    }
+    
+    /* Scroll suave */
+    .table-responsive {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Deshabilitar zoom en inputs (mejor UX) */
+    input, select, textarea {
+        font-size: 16px;
+    }
+}
+
+/* ============================================
+   UTILIDADES RESPONSIVAS - CARTOON
+   ============================================ */
+
+/* Ocultar en móviles */
+.hide-on-mobile {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .hide-on-mobile {
+        display: block;
+    }
+}
+
+/* Mostrar solo en móviles */
+.show-on-mobile {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .show-on-mobile {
+        display: none;
+    }
+}
+
+/* Texto responsivo */
+.text-responsive {
+    font-size: clamp(0.8rem, 4vw, 1rem);
+}
+
+.heading-responsive {
+    font-size: clamp(1.2rem, 6vw, 2.5rem);
+}

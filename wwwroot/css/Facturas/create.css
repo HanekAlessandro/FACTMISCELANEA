@@ -1,0 +1,73 @@
+body { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    min-height: 100vh; 
+    padding: 20px; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+.factura-container { 
+    background: rgba(255,255,255,0.95); 
+    border-radius: 20px; 
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
+    padding: 30px; 
+    animation: fadeIn 0.5s ease-out; 
+}
+.header-factura { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    border-radius: 15px; 
+    padding: 20px; 
+    margin-bottom: 30px; 
+    color: white; 
+}
+.btn-agregar { 
+    background: #48bb78; 
+    color: white; 
+    border: none; 
+    padding: 8px 20px; 
+    border-radius: 20px; 
+    transition: all 0.3s; 
+}
+.btn-agregar:hover { 
+    background: #38a169; 
+    transform: translateY(-2px); 
+}
+.btn-guardar { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    color: white; 
+    border: none; 
+    padding: 10px 30px; 
+    border-radius: 25px; 
+    font-weight: 600; 
+}
+.btn-eliminar-item { 
+    background: #e53e3e; 
+    color: white; 
+    border: none; 
+    border-radius: 50%; 
+    width: 30px; 
+    height: 30px; 
+    font-size: 12px; 
+}
+.total-card { 
+    background: #f8f9fa; 
+    border-radius: 15px; 
+    padding: 20px; 
+    margin-top: 20px; 
+}
+.table-productos th { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    color: white; 
+}
+.stock-info { 
+    font-size: 12px; 
+    color: #718096; 
+    margin-top: 5px; 
+}
+.stock-error { 
+    font-size: 12px; 
+    color: #e53e3e; 
+    margin-top: 5px; 
+}
+@keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(20px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}

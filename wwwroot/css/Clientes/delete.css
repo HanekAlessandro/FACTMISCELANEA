@@ -1,0 +1,17 @@
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 50px 0;
+}
+.delete-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+}
+.warning-icon {
+    font-size: 80px;
+    color: #dc3545;
+    margin-bottom: 20px;
+}

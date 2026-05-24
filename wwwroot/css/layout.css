@@ -1,0 +1,43 @@
+body {
+    padding-top: 70px;
+    font-family: 'Poppins', sans-serif;
+}
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+.brand-text {
+    color: white;
+}
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s;
+}
+.nav-link:hover {
+    transform: translateY(-2px);
+}
+.footer {
+    background: #f8f9fa;
+    padding: 20px 0;
+    margin-top: 50px;
+    border-top: 1px solid #e9ecef;
+}
+.main-content {
+    min-height: calc(100vh - 140px);
+}
+.user-name {
+    font-weight: 600;
+}
+.btn-logout {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.8);
+    transition: all 0.3s;
+}
+.btn-logout:hover {
+    color: white;
+    transform: translateY(-2px);
+}
